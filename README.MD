@@ -1,0 +1,1 @@
+addons/tile_set_clipboard.editor/README.md
