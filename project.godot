@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="TileSet Clipboard"
+run/main_scene="uid://xvjxxwj4xc0r"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/tile_set_clipboard.editor/plugin.cfg")
 
 [rendering]
 
