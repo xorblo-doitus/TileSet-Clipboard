@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://15irffcojcad"]
+
+[node name="Buttons" type="HBoxContainer"]
+offset_right = 305.0
+offset_bottom = 146.0
+
+[node name="CopyButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Copy"
+
+[node name="PasteButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Paste"
