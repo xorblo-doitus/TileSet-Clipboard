@@ -51,6 +51,16 @@ func get_properties_to_paste(tile: TileData) -> PackedStringArray:
 func copy() -> void:
 	print("COPY")
 	copied = TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
+	var copies: Dictionary[Vector2i, TileData] = {}
+	for pos in copied.pos_to_tile:
+		var src: TileData = copied.pos_to_tile[pos]
+		var new: TileData = TileData.new()
+		for property in get_properties_to_paste(src):
+			new.set(property, src.get(property))
+		copies[pos] = new
+	
+	copied.pos_to_tile = copies
+
 
 func paste() -> void:
 	if copied == null:
