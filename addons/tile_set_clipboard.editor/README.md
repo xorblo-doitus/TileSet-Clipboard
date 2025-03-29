@@ -4,7 +4,7 @@
 
 Add copy and pasting to the tile set editor.
 
-![Copying and pasting 4 tiles in a TileSet](/addons/bbcode_edit.editor/.assets_for_readme/color_completion.gif)
+![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste.gif)
 
 
 ## RoadMap
