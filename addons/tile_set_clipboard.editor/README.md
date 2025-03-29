@@ -1,8 +1,8 @@
-# TileSet Clipboard
+# [BETA] TileSet Clipboard
 
 ![Addon's icon](/icon.svg)
 
-Add copy and pasting to the tile set editor.
+Adds copy and pasting to the tile set editor.
 
 ![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste.gif)
 
