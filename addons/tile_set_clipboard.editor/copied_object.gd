@@ -14,3 +14,9 @@ func from_object(object: Object) -> void:
 		var copied_property: CopiedProperty = CopiedProperty.new()
 		copied_property.from_dict_and_value(property_dict, object.get(property_dict["name"]))
 		properties[property_dict["name"]] = copied_property
+
+
+
+func paste(object: Object) -> void:
+	for property_name in properties:
+		properties[property_name].paste(object, property_name)

@@ -9,6 +9,8 @@ extends Resource
 #@export var copied_value: Variant
 # We basically need two members because if [member deep_copy] is modified,
 # we would then need the other value
+# TODO Handle serialization (base value wouldn't always be the right reference,
+# for instance if it was an internal resource of the tileset I think)
 @export_storage var base_value: Variant
 @export_storage var cloned_base_value: Variant:
 	get:
@@ -42,10 +44,13 @@ func from_dict_and_value(dict: Dictionary, value: Variant) -> void:
 
 
 func paste(object: Object, property_name: StringName) -> void:
-	object.set(property_name, get_value_to_paste())
+	#object.set(property_name, get_value_to_paste())
+	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	history.add_do_property(object, property_name, get_value_to_paste())
+	history.add_undo_property(object, property_name, object.get(property_name))
 
 
 func get_value_to_paste() -> Variant:
-	if deep_copy:
+	if deep_copy and cloned_base_value is Resource:
 		return cloned_base_value.duplicate()
 	return base_value

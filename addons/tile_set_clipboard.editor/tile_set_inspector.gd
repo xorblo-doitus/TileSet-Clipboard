@@ -2,6 +2,7 @@ extends EditorInspectorPlugin
 
 const Scrapper = preload("res://addons/tile_set_clipboard.editor/scrapper.gd")
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
+const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copied_tiles.gd")
 
 const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/buttons.tscn")
 
@@ -9,8 +10,8 @@ static var _atlas_tile_proxy: Object
 
 
 var buttons: Control
-var copied: TileSelection
-var current_selection: TileSelection
+var copied: CopiedTiles
+#var current_selection: TileSelection
 
 static func get_tiles() -> Array[TileData]:
 	if !is_instance_valid(_atlas_tile_proxy):
@@ -49,46 +50,21 @@ func get_properties_to_paste(tile: TileData) -> PackedStringArray:
 
 
 func copy() -> void:
-	print("COPY")
-	copied = TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
-	
-	for pos in copied.pos_to_tile:
-		var src: TileData = copied.pos_to_tile[pos]
-		var new: TileData = TileData.new()
-		for property in get_properties_to_paste(src):
-			new.set(property, src.get(property))
-		copied.pos_to_tile[pos] = new
+	copied = CopiedTiles.new()
+	copied.from_selection(
+		TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
+	)
 
 
 func paste() -> void:
 	if copied == null:
 		return
 	
-	print("PASTE")
-	current_selection = TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
-	
-	#var src_x: int = copied.zone.position.x
-	#var src_y: int = copied.zone.position.y
-	#var dest_x: int = current_selection.zone.position.x
-	#var dest_y: int = current_selection.zone.position.y
-	
-	#for x_offset in min(copied.)
+	var current_selection: TileSelection = TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
 	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	
 	history.create_action("Paste tiles in tile set")
-	
-	for position: Vector2i in copied.pos_to_tile:
-		var tile: TileData = copied.pos_to_tile.get(position)
-		var dest_pos: Vector2i = current_selection.zone.position + position - copied.zone.position
-		print(dest_pos)
-		if dest_pos in current_selection.pos_to_tile:
-			print("exist")
-			var dest_tile: TileData = current_selection.pos_to_tile.get(dest_pos)
-			print("Properties :")
-			for property in get_properties_to_paste(tile):
-				print(property)
-				history.add_do_property(dest_tile, property, tile.get(property))
-				history.add_undo_property(dest_tile, property, dest_tile.get(property))
-	
+	copied.paste(current_selection)
 	history.commit_action()
 
 
