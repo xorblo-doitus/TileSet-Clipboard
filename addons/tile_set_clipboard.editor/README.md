@@ -4,7 +4,16 @@
 
 Adds copy and pasting to the tile set editor.
 
+
+
+## Features showcase
+
+You can copy and paste tiles:
 ![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste.gif)
+
+You can filter which properties are pasted:
+![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/filter_properties.gif)
+
 
 
 ## RoadMap
