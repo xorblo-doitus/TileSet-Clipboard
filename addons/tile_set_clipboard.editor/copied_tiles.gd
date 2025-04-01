@@ -19,7 +19,6 @@ func from_selection(selection: TileSelection) -> void:
 		copies[pos - selection.zone.position] = copy
 
 
-
 func paste(selection: TileSelection) -> void:
 	for position: Vector2i in copies:
 		var copy: CopiedObject = copies.get(position)

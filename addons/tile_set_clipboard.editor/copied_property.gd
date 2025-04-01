@@ -1,7 +1,8 @@
 extends Resource
 
 
-
+## If true, this property is pasted
+@export var enabled: bool = true
 ## If true, resources are duplicated
 @export var deep_copy: bool = true
 
@@ -44,6 +45,8 @@ func from_dict_and_value(dict: Dictionary, value: Variant) -> void:
 
 
 func paste(object: Object, property_name: StringName) -> void:
+	if not enabled:
+		return
 	#object.set(property_name, get_value_to_paste())
 	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
 	history.add_do_property(object, property_name, get_value_to_paste())

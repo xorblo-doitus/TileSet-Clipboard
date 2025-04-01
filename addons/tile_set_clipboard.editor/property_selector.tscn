@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dv15yco62eok5"]
+
+[ext_resource type="Script" uid="uid://bdmhj14xct6kr" path="res://addons/tile_set_clipboard.editor/property_selector.gd" id="1_5mcqa"]
+
+[node name="PropertySelector" type="Tree"]
+offset_right = 16.0
+offset_bottom = 17.0
+columns = 2
+column_titles_visible = true
+script = ExtResource("1_5mcqa")
+ignored_properties = PackedStringArray("script")

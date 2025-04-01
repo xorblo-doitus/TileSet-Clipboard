@@ -2,9 +2,11 @@ extends EditorInspectorPlugin
 
 const Scrapper = preload("res://addons/tile_set_clipboard.editor/scrapper.gd")
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
+const PropertySelector = preload("res://addons/tile_set_clipboard.editor/property_selector.gd")
 const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copied_tiles.gd")
 
 const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/buttons.tscn")
+const PACKED_SETTINGS = preload("res://addons/tile_set_clipboard.editor/settings.tscn")
 
 static var _atlas_tile_proxy: Object
 
@@ -34,15 +36,15 @@ func _can_handle(object: Object) -> bool:
 	return false
 
 
-func get_properties_to_paste(tile: TileData) -> PackedStringArray:
+func get_pastable_properties(tile: TileData) -> PackedStringArray:
 	var result: PackedStringArray
 	
 	for property in tile.get_property_list():
-		if (
+		if true or (
 			property["usage"] & PROPERTY_USAGE_STORAGE
-			&& property["name"] != "atlas_coords"
-			&& property["name"] != "size_in_atlas"
-			&& property["name"] != "script"
+			and property["name"] != "atlas_coords"
+			and property["name"] != "size_in_atlas"
+			and property["name"] != "script"
 		):
 			result.append(property["name"])
 	
@@ -68,6 +70,27 @@ func paste() -> void:
 	history.commit_action()
 
 
+
+func open_settings() -> void:
+	#EditorInterface.popup_property_selector(_atlas_tile_proxy, print)
+	var popup: ConfirmationDialog = PACKED_SETTINGS.instantiate()
+	var tree: PropertySelector = popup.get_node("%PropertySelector")
+	
+	#var base_tile: TileData
+	#if is_instance_valid(copied) and not copied.pos_to_tile.is_empty():
+		#base_tile = copied.pos_to_tile.values()[0]
+	#else:
+		##base_tile = TileData.new()
+		#pass
+	
+	tree.set_targets(copied.copies.values())
+	#tree.set_target(base_tile)
+	
+	EditorInterface.popup_dialog_centered(popup, Vector2i(0, 600))
+
+
+
+
 func honk() -> void:
 	prints("Honk!")
 	copy()
@@ -79,8 +102,9 @@ func _parse_begin(object: Object) -> void:
 	if buttons == null:
 		print("recreate button")
 		buttons = PACKED_BUTTONS.instantiate()
-		buttons.get_node("CopyButton").pressed.connect(copy)
-		buttons.get_node("PasteButton").pressed.connect(paste)
+		buttons.get_node("%CopyButton").pressed.connect(copy)
+		buttons.get_node("%PasteButton").pressed.connect(paste)
+		buttons.get_node("%SettingsButton").pressed.connect(open_settings)
 	
 	# TODO Find a way to use keyboard shortcuts (or wait https://github.com/godotengine/godot/pull/102807)
 	#var gui_input_signal: Signal = Scrapper._atlas_source_editor.gui_input

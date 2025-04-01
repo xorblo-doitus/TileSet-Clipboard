@@ -6,6 +6,7 @@ extends HBoxContainer
 
 @onready var copy_button: Button = %CopyButton
 @onready var paste_button: Button = %PasteButton
+@onready var settings_button: Button = %SettingsButton
 
 
 
@@ -18,3 +19,4 @@ func load_theme() -> void:
 	var editor_base_control: Control = EditorInterface.get_base_control()
 	copy_button.icon = editor_base_control.get_theme_icon("ActionCopy", "EditorIcons")
 	paste_button.icon = editor_base_control.get_theme_icon("ActionPaste", "EditorIcons")
+	settings_button.icon = editor_base_control.get_theme_icon("GDScript", "EditorIcons")

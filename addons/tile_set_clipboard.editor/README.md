@@ -10,7 +10,8 @@ Adds copy and pasting to the tile set editor.
 ## RoadMap
 
 - [ ] Add shortcut (ctrl + c and ctr + v). Unknown feasibility. Maybe needs [this Godot PR](https://github.com/godotengine/godot/pull/102807).
-- [ ] Add a way to filter which properties are pasted.
+- [x] Add a way to filter which properties are pasted.
+  - [ ] Add a way to filter property components (such as x and y for Vector2 properties)
 - [ ] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
 - [ ] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) . Unknown feasibility.
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.

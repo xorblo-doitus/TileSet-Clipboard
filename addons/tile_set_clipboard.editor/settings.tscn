@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://fn8w22fetusk"]
+
+[ext_resource type="PackedScene" uid="uid://dv15yco62eok5" path="res://addons/tile_set_clipboard.editor/property_selector.tscn" id="1_0asvu"]
+
+[node name="Settings" type="ConfirmationDialog"]
+
+[node name="PropertySelector" parent="." instance=ExtResource("1_0asvu")]
+unique_name_in_owner = true
+ignored_properties = PackedStringArray("script", "atlas_coords", "size_in_atlas")
