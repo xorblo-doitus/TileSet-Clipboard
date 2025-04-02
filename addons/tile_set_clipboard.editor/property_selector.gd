@@ -2,6 +2,13 @@
 extends Tree
 
 
+enum State {
+	UNCHECKED,
+	INTERMEDIATE,
+	CHECKED,
+}
+
+
 const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copied_object.gd")
 const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
 
@@ -79,8 +86,29 @@ func set_targets(targets: Array[CopiedObject]) -> void:
 		item.set_text(_COL_TEXT, property_name)
 		item.set_editable(_COL_CHECKBOX, true)
 		item.set_cell_mode(_COL_CHECKBOX, TreeItem.CELL_MODE_CHECK)
-		item.set_indeterminate(_COL_CHECKBOX, true)
+		match fetch_propperty_state(properties[property_name].properties):
+			State.UNCHECKED:
+				item.set_checked(_COL_CHECKBOX, false)
+			State.INTERMEDIATE:
+				item.set_indeterminate(_COL_CHECKBOX, true)
+			State.CHECKED:
+				item.set_checked(_COL_CHECKBOX, true)
 
+
+func fetch_propperty_state(properties: Array[CopiedProperty]) -> State:
+	if properties.is_empty():
+		return State.UNCHECKED
+	
+	var checked: bool = properties[-1].enabled
+	
+	for i in len(properties) - 1:
+		if properties[i].enabled != checked:
+			return State.INTERMEDIATE
+	
+	if checked:
+		return State.CHECKED
+	
+	return State.UNCHECKED
 
 
 func reset() -> void:
