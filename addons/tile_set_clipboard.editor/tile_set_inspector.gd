@@ -82,8 +82,8 @@ func open_settings() -> void:
 	#else:
 		##base_tile = TileData.new()
 		#pass
-	
-	tree.set_targets(copied.copies.values())
+	if is_instance_valid(copied):
+		tree.set_targets(copied.copies.values())
 	#tree.set_target(base_tile)
 	
 	EditorInterface.popup_dialog_centered(popup, Vector2i(0, 600))
