@@ -12,7 +12,7 @@ func from_object(object: Object) -> void:
 	in CopiedProperty.get_serializable_properties(object):
 		print(property_dict["name"])
 		var copied_property: CopiedProperty = CopiedProperty.new()
-		copied_property.from_value(property_dict, object.get(property_dict["name"]))
+		copied_property.from_value(object.get(property_dict["name"]))
 		properties[property_dict["name"]] = copied_property
 
 
