@@ -3,7 +3,7 @@ extends Resource
 
 ## If true, this property is pasted
 @export var enabled: bool = true
-## If true, resources are duplicated
+## If true, resources are duplicated (and subresources too)
 @export var deep_copy: bool = true
 
 
@@ -39,7 +39,8 @@ func from_dict_and_value(dict: Dictionary, value: Variant) -> void:
 		#copied_value = value
 	base_value = value
 	if value is Resource:
-		cloned_base_value = value.duplicate()
+		cloned_base_value = value.duplicate(true)
+		# cloned_base_value.resource_path = ""
 	else:
 		cloned_base_value = null
 
@@ -55,5 +56,5 @@ func paste(object: Object, property_name: StringName) -> void:
 
 func get_value_to_paste() -> Variant:
 	if deep_copy and cloned_base_value is Resource:
-		return cloned_base_value.duplicate()
+		return cloned_base_value.duplicate(true)
 	return base_value
