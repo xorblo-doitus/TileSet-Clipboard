@@ -13,16 +13,6 @@ const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copied_obje
 const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
 
 
-const _NESTING_USAGES = (
-	PROPERTY_USAGE_CATEGORY
-	| PROPERTY_USAGE_GROUP
-	| PROPERTY_USAGE_SUBGROUP
-)
-const _NESTING_LEVELS: Array[int] = [
-	PROPERTY_USAGE_CATEGORY,
-	PROPERTY_USAGE_GROUP,
-	PROPERTY_USAGE_SUBGROUP,
-]
 
 const _COL_CHECKBOX: int = 0
 const _COL_TEXT: int = _COL_CHECKBOX + 1
