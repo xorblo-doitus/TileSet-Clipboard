@@ -1,10 +1,13 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://du345tavvnuq8"]
+[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://du345tavvnuq8"]
 
 [ext_resource type="Texture2D" uid="uid://dmn3e536ro8k0" path="res://godot_icon.svg" id="1_kfwk1"]
 [ext_resource type="Texture2D" uid="uid://bubkbee162gji" path="res://test_resource.tres" id="1_nq4aq"]
 
 [sub_resource type="Gradient" id="Gradient_nq4aq"]
 colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nq4aq"]
+gradient = SubResource("Gradient_nq4aq")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nq4aq"]
 texture = ExtResource("1_kfwk1")
@@ -109,7 +112,7 @@ texture = ExtResource("1_kfwk1")
 2:5/0/terrains_peering_bit/left_side = 0
 2:5/0/terrains_peering_bit/top_side = 0
 3:5/0 = 0
-3:5/0/custom_data_2 = SubResource("Gradient_nq4aq")
+3:5/0/custom_data_2 = SubResource("GradientTexture1D_nq4aq")
 4:5/0 = 0
 4:5/0/custom_data_2 = ExtResource("1_nq4aq")
 5:5/0 = 0
