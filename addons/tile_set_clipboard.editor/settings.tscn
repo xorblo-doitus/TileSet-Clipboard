@@ -4,6 +4,6 @@
 
 [node name="Settings" type="ConfirmationDialog"]
 
-[node name="PropertySelector" parent="." instance=ExtResource("1_0asvu")]
+[node name="CopiedPropertiesSelector" parent="." instance=ExtResource("1_0asvu")]
 unique_name_in_owner = true
 ignored_properties = PackedStringArray("script", "atlas_coords", "size_in_atlas")

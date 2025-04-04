@@ -31,8 +31,8 @@ static func is_serializable(property: Dictionary) -> bool:
 
 
 
-func from_dict_and_value(dict: Dictionary, value: Variant) -> void:
-#func from_dict_and_value(dict: Dictionary[String, Variant], value: Variant) -> void:
+func from_value(value: Variant) -> void:
+#func from_value(dict: Dictionary[String, Variant], value: Variant) -> void:
 	#if value is Resource:
 		#copied_value = value.duplicate()
 	#else:

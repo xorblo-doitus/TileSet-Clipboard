@@ -11,10 +11,12 @@ enum State {
 
 const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copied_object.gd")
 const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
+const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copied_properties.gd")
 
 
 
 const _COL_CHECKBOX: int = 0
+#const _COL_CHECKBOX: int = 0
 const _COL_TEXT: int = _COL_CHECKBOX + 1
 const _COL_COUNT: int = _COL_TEXT + 1
 
@@ -24,7 +26,7 @@ const _COL_COUNT: int = _COL_TEXT + 1
 
 
 var targets: Array[CopiedObject]: set = set_targets
-var properties: Dictionary[StringName, CopiedProperties]
+var property_map: Dictionary[StringName, CopiedProperties]
 
 
 @export var ignored_properties: PackedStringArray = [
@@ -44,19 +46,19 @@ func _init() -> void:
 
 
 
-func set_targets(targets: Array[CopiedObject]) -> void:
-	targets = targets
+func set_targets(new_targets: Array[CopiedObject]) -> void:
+	targets = new_targets
 	reset()
 	
 	
 	#var properties: Dictionary[StringName, Array[Object]]
 	#print(target.get_property_list())
-	properties.clear()
+	property_map.clear()
 	for target in targets:
 		for property in target.properties:
-			if not property in properties:
-				properties[property] = CopiedProperties.new()
-			properties[property].properties.append(target.properties[property])
+			if not property in property_map:
+				property_map[property] = CopiedProperties.new()
+			property_map[property].properties.append(target.properties[property])
 	
 	var root: TreeItem = create_item()
 
@@ -64,25 +66,28 @@ func set_targets(targets: Array[CopiedObject]) -> void:
 	root.set_cell_mode(_COL_CHECKBOX, TreeItem.CELL_MODE_CHECK)
 	root.set_text(_COL_TEXT, "TileData")
 	
-	for property_name in properties:
+	for property_name in property_map:
 		#var property_name: String = property["name"]
 		if property_name in ignored_properties:
 			continue
 		
-		#var usage: int = property["usage"]
-		
+		var properties: Array[CopiedProperty] = property_map[property_name].properties
 		var item: TreeItem = create_item(root)
 		
 		item.set_text(_COL_TEXT, property_name)
 		item.set_editable(_COL_CHECKBOX, true)
 		item.set_cell_mode(_COL_CHECKBOX, TreeItem.CELL_MODE_CHECK)
-		match fetch_propperty_state(properties[property_name].properties):
+		match fetch_propperty_state(properties):
 			State.UNCHECKED:
 				item.set_checked(_COL_CHECKBOX, false)
 			State.INTERMEDIATE:
 				item.set_indeterminate(_COL_CHECKBOX, true)
 			State.CHECKED:
 				item.set_checked(_COL_CHECKBOX, true)
+		
+		# var type: int = fetch_propperty_type(properties)
+		#if type & 
+		
 
 
 func fetch_propperty_state(properties: Array[CopiedProperty]) -> State:
@@ -101,6 +106,13 @@ func fetch_propperty_state(properties: Array[CopiedProperty]) -> State:
 	return State.UNCHECKED
 
 
+func fetch_propperty_type(properties: Array[CopiedProperty]) -> int:
+	if properties.is_empty():
+		return TYPE_NIL
+	
+	return typeof(properties[0].cloned_base_value)
+
+
 func reset() -> void:
 	clear()
 
@@ -109,12 +121,8 @@ func propagate_checkboxes() -> void:
 	if get_edited() != get_root():
 		var enabled: bool = get_edited().is_checked(_COL_CHECKBOX)
 		var property_name: StringName = get_edited().get_text(_COL_TEXT)
-		var affected_properties: CopiedProperties = properties[property_name]
+		var affected_properties: CopiedProperties = property_map[property_name]
 		for property in affected_properties.properties:
 			property.enabled = enabled
 	
 	get_edited().propagate_check(_COL_CHECKBOX, false)
-
-
-class CopiedProperties:
-	var properties: Array[CopiedProperty]

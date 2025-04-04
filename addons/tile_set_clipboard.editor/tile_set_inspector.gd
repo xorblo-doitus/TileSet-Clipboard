@@ -2,7 +2,7 @@ extends EditorInspectorPlugin
 
 const Scrapper = preload("res://addons/tile_set_clipboard.editor/scrapper.gd")
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
-const PropertySelector = preload("res://addons/tile_set_clipboard.editor/property_selector.gd")
+const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor/copied_properties_selector.gd")
 const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copied_tiles.gd")
 
 const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/buttons.tscn")
@@ -74,7 +74,7 @@ func paste() -> void:
 func open_settings() -> void:
 	#EditorInterface.popup_property_selector(_atlas_tile_proxy, print)
 	var popup: ConfirmationDialog = PACKED_SETTINGS.instantiate()
-	var tree: PropertySelector = popup.get_node("%PropertySelector")
+	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
 	#var base_tile: TileData
 	#if is_instance_valid(copied) and not copied.pos_to_tile.is_empty():
@@ -98,7 +98,7 @@ func honk() -> void:
 	print(copied.pos_to_tile)
 
 
-func _parse_begin(object: Object) -> void:
+func _parse_begin(_object: Object) -> void:
 	if buttons == null:
 		print("recreate button")
 		buttons = PACKED_BUTTONS.instantiate()
