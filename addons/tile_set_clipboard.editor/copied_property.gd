@@ -1,49 +1,20 @@
 extends Resource
 
 
-const ALWAYS_DUPLICATED_TYPES = (
-	TYPE_DICTIONARY
-	| TYPE_ARRAY
-	| TYPE_PACKED_BYTE_ARRAY
-	| TYPE_PACKED_INT32_ARRAY
-	| TYPE_PACKED_INT64_ARRAY
-	| TYPE_PACKED_FLOAT32_ARRAY
-	| TYPE_PACKED_FLOAT64_ARRAY
-	| TYPE_PACKED_STRING_ARRAY
-	| TYPE_PACKED_VECTOR2_ARRAY
-	| TYPE_PACKED_VECTOR3_ARRAY
-	| TYPE_PACKED_COLOR_ARRAY
-	| TYPE_PACKED_VECTOR4_ARRAY
-)
-#const CANT_DUPLICATE_TYPES = (
-	#NIL,
-	#BOOL,
-	#INT,
-	#FLOAT,
-	#STRING,
-	#VECTOR2,
-	#VECTOR2I,
-	#RECT2,
-	#RECT2I,
-	#VECTOR3,
-	#VECTOR3I,
-	#TRANSFORM2D,
-	#VECTOR4,
-	#VECTOR4I,
-	#PLANE,
-	#QUATERNION,
-	#AABB,
-	#BASIS,
-	#TRANSFORM3D,
-	#PROJECTION,
-	#COLOR,
-	#STRING_NAME,
-	#NODE_PATH,
-	#RID,
-	#OBJECT,
-	#CALLABLE,
-	#SIGNAL,
-#)
+const ALWAYS_DUPLICATED_TYPES = [
+	TYPE_DICTIONARY,
+	TYPE_ARRAY,
+	TYPE_PACKED_BYTE_ARRAY,
+	TYPE_PACKED_INT32_ARRAY,
+	TYPE_PACKED_INT64_ARRAY,
+	TYPE_PACKED_FLOAT32_ARRAY,
+	TYPE_PACKED_FLOAT64_ARRAY,
+	TYPE_PACKED_STRING_ARRAY,
+	TYPE_PACKED_VECTOR2_ARRAY,
+	TYPE_PACKED_VECTOR3_ARRAY,
+	TYPE_PACKED_COLOR_ARRAY,
+	TYPE_PACKED_VECTOR4_ARRAY,
+]
 
 
 ## If true, this property is pasted
@@ -58,11 +29,11 @@ const ALWAYS_DUPLICATED_TYPES = (
 # TODO Handle serialization (base value wouldn't always be the right reference,
 # for instance if it was an internal resource of the tileset I think)
 @export_storage var base_value: Variant
-@export_storage var cloned_base_value: Variant:
+@export_storage var duplicated_value: Variant:
 	get:
-		if cloned_base_value == null:
+		if duplicated_value == null:
 			return base_value
-		return cloned_base_value
+		return duplicated_value
 
 
 
@@ -78,14 +49,14 @@ static func is_serializable(property: Dictionary) -> bool:
 func from_value(value: Variant) -> void:
 	base_value = value
 	if (
-		typeof(value) & ALWAYS_DUPLICATED_TYPES
+		typeof(value) in ALWAYS_DUPLICATED_TYPES
 		or (value is Resource and not value.resource_scene_unique_id.is_empty())
 	):
 		duplicate = true
-		cloned_base_value = value.duplicate(true)
+		duplicated_value = _duplicate(value)
 	else:
 		duplicate = false
-		cloned_base_value = null
+		duplicated_value = null
 
 
 func paste(object: Object, property_name: StringName) -> void:
@@ -99,20 +70,26 @@ func paste(object: Object, property_name: StringName) -> void:
 
 func get_value_to_paste() -> Variant:
 	if duplicate and can_duplicate():
-		if (
-			cloned_base_value is Resource
-			or typeof(cloned_base_value) & TYPE_ARRAY | TYPE_DICTIONARY
-		):
-			return cloned_base_value.duplicate(true)
-		else:
-			return cloned_base_value.duplicate()
+		return _duplicate(duplicated_value)
 	return base_value
+
+
+## Value must be duplicatable
+static func _duplicate(value: Variant) -> Variant:
+	if (
+			value is Resource
+			or typeof(value) == TYPE_ARRAY
+			or typeof(value) == TYPE_DICTIONARY
+		):
+		return value.duplicate(true)
+	
+	return value.duplicate()
 
 
 func can_duplicate() -> bool:
 	return (
-		typeof(cloned_base_value) & ALWAYS_DUPLICATED_TYPES
-		or cloned_base_value is Resource
+		typeof(duplicated_value) in ALWAYS_DUPLICATED_TYPES
+		or duplicated_value is Resource
 	)
 
 
