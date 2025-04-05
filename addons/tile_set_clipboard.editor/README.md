@@ -20,7 +20,9 @@ You can **filter** which **properties** are pasted:
 
 ## RoadMap
 
-- [ ] Add shortcut (ctrl + c and ctr + v). Unknown feasibility. Maybe needs [this Godot PR](https://github.com/godotengine/godot/pull/102807).
+- [x] ~~Add shortcut (ctrl + c and ctr + v). Unknown feasibility. Maybe needs [this Godot PR](https://github.com/godotengine/godot/pull/102807).~~
+  - [x] Add shortcut: shift + c and shift + v
+        (Found after a lot of trouble that it was possible by grabing focus and using BaseButton's `shortcut`, and that the shift modifier was the only one not intercepted by other GUI)
 - [x] Add a way to filter which properties are pasted.
   - [ ] Display custom data name instead of "custom_data_0", "custom_data_1", "custom_data_2"...
   - [ ] Add a way to filter property components (such as x and y for Vector2 properties)

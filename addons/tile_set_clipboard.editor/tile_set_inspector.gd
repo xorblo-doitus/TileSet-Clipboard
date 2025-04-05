@@ -87,19 +87,4 @@ func _parse_begin(_object: Object) -> void:
 		buttons.get_node("%PasteButton").pressed.connect(paste)
 		buttons.get_node("%SettingsButton").pressed.connect(open_settings)
 	
-	# TODO Find a way to use keyboard shortcuts (or wait https://github.com/godotengine/godot/pull/102807)
-	#var gui_input_signal: Signal = Scrapper._atlas_source_editor.gui_input
-	#if !gui_input_signal.is_connected(_on_tile_set_editor_gui_input):
-		#gui_input_signal.connect(_on_tile_set_editor_gui_input)
-	
 	add_custom_control(buttons)
-
-
-# TODO Find a way to use keyboard shortcut (or wait https://github.com/godotengine/godot/pull/102807)
-#func _on_tile_set_editor_gui_input(event: InputEvent) -> void:
-	#if InputMap.event_is_action(event, "ui_copy", true):
-		#copy()
-		#Scrapper._tile_set_editor.get_viewport().set_input_as_handled()
-	#elif InputMap.event_is_action(event, "ui_paste", true):
-		#paste()
-		#Scrapper._tile_set_editor.get_viewport().set_input_as_handled()

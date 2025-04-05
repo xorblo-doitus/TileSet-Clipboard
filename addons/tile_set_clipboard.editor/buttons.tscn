@@ -1,6 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://15irffcojcad"]
+[gd_scene load_steps=12 format=3 uid="uid://15irffcojcad"]
 
 [ext_resource type="Script" uid="uid://bogq3q61adc51" path="res://addons/tile_set_clipboard.editor/buttons.gd" id="1_5qnko"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_5qnko"]
+device = -1
+shift_pressed = true
+keycode = 67
+unicode = 67
+
+[sub_resource type="Shortcut" id="Shortcut_el6n0"]
+events = [SubResource("InputEventKey_5qnko")]
 
 [sub_resource type="Image" id="Image_5qnko"]
 data = {
@@ -13,6 +22,15 @@ data = {
 
 [sub_resource type="ImageTexture" id="ImageTexture_el6n0"]
 image = SubResource("Image_5qnko")
+
+[sub_resource type="InputEventKey" id="InputEventKey_am7yw"]
+device = -1
+shift_pressed = true
+keycode = 86
+unicode = 86
+
+[sub_resource type="Shortcut" id="Shortcut_je1xu"]
+events = [SubResource("InputEventKey_am7yw")]
 
 [sub_resource type="Image" id="Image_am7yw"]
 data = {
@@ -47,6 +65,7 @@ script = ExtResource("1_5qnko")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+shortcut = SubResource("Shortcut_el6n0")
 text = "Copy"
 icon = SubResource("ImageTexture_el6n0")
 
@@ -54,6 +73,7 @@ icon = SubResource("ImageTexture_el6n0")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+shortcut = SubResource("Shortcut_je1xu")
 text = "Paste"
 icon = SubResource("ImageTexture_je1xu")
 
@@ -63,3 +83,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 icon = SubResource("ImageTexture_xm62r")
+
+[connection signal="pressed" from="PasteButton" to="." method="_on_paste_button_pressed"]
