@@ -20,11 +20,11 @@ const ALWAYS_DUPLICATED_TYPES = (
 ## If true, this property is pasted
 @export var enabled: bool = true
 ## If true, resources are duplicated (and subresources too)
-@export var deep_copy: bool = true
+@export var duplicate: bool = true
 
 
 #@export var copied_value: Variant
-# We basically need two members because if [member deep_copy] is modified,
+# We basically need two members because if [member duplicate] is modified,
 # we would then need the other value
 # TODO Handle serialization (base value wouldn't always be the right reference,
 # for instance if it was an internal resource of the tileset I think)
@@ -52,23 +52,29 @@ func from_value(value: Variant) -> void:
 		typeof(value) & ALWAYS_DUPLICATED_TYPES
 		or (value is Resource and not value.resource_scene_unique_id.is_empty())
 	):
-		deep_copy = true
+		duplicate = true
 		cloned_base_value = value.duplicate(true)
 	else:
-		deep_copy = false
+		duplicate = false
 		cloned_base_value = null
 
 
 func paste(object: Object, property_name: StringName) -> void:
 	if not enabled:
 		return
-	#object.set(property_name, get_value_to_paste())
+	
 	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
 	history.add_do_property(object, property_name, get_value_to_paste())
 	history.add_undo_property(object, property_name, object.get(property_name))
 
 
 func get_value_to_paste() -> Variant:
-	if deep_copy and cloned_base_value is Resource:
+	if (
+		duplicate
+		and (
+			typeof(cloned_base_value) & ALWAYS_DUPLICATED_TYPES
+			or cloned_base_value is Resource
+		)
+	):
 		return cloned_base_value.duplicate(true)
 	return base_value
