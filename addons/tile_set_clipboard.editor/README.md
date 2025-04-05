@@ -2,7 +2,7 @@
 
 ![Addon's icon](/icon.svg)
 
-A Godot addon that adds copy and pasting to the tile set editor.
+A Godot addon that adds advanced copying-and-pasting to the tile set editor.
 
 
 
@@ -10,11 +10,17 @@ A Godot addon that adds copy and pasting to the tile set editor.
 
 You can **copy** and **paste** multiple tiles:
 
-![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste.gif)
+![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste_v2.gif)
+
 
 You can **filter** which **properties** are pasted:
 
-![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/filter_properties.gif)
+![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/filter_properties_v2.gif)
+
+
+You can **undo** and **redo** pasting:
+
+![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/undo_redo.gif)
 
 
 
@@ -30,6 +36,7 @@ You can **filter** which **properties** are pasted:
 - [ ] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
 - [ ] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) . Unknown feasibility.
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
+- [ ] Add a way to flip or rotate the copied properties (or the selection?)
 
 
 
