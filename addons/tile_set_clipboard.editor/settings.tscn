@@ -2,8 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://dv15yco62eok5" path="res://addons/tile_set_clipboard.editor/property_selector.tscn" id="1_0asvu"]
 
-[node name="Settings" type="ConfirmationDialog"]
+[node name="Settings" type="AcceptDialog"]
+title = "Settings"
+ok_button_text = "Close"
 
 [node name="CopiedPropertiesSelector" parent="." instance=ExtResource("1_0asvu")]
 unique_name_in_owner = true
+columns = 3
 ignored_properties = PackedStringArray("script", "atlas_coords", "size_in_atlas")

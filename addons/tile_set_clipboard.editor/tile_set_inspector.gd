@@ -71,13 +71,13 @@ func paste() -> void:
 
 
 func open_settings() -> void:
-	var popup: ConfirmationDialog = PACKED_SETTINGS.instantiate()
+	var popup: AcceptDialog = PACKED_SETTINGS.instantiate()
 	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
 	if is_instance_valid(copied):
 		tree.set_targets(copied.copies.values())
 	
-	EditorInterface.popup_dialog_centered(popup, Vector2i(0, 600))
+	EditorInterface.popup_dialog_centered(popup, Vector2i(300, 600))
 
 
 func _parse_begin(_object: Object) -> void:
