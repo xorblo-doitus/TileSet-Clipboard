@@ -22,7 +22,9 @@ You can **filter** which **properties** are pasted:
 
 - [ ] Add shortcut (ctrl + c and ctr + v). Unknown feasibility. Maybe needs [this Godot PR](https://github.com/godotengine/godot/pull/102807).
 - [x] Add a way to filter which properties are pasted.
+  - [ ] Display custom data name instead of "custom_data_0", "custom_data_1", "custom_data_2"...
   - [ ] Add a way to filter property components (such as x and y for Vector2 properties)
+  - [ ] (Maybe) Display value type
 - [ ] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
 - [ ] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) . Unknown feasibility.
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
