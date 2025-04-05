@@ -59,6 +59,7 @@ image = SubResource("Image_k756p")
 [node name="Buttons" type="HBoxContainer"]
 offset_right = 305.0
 offset_bottom = 146.0
+focus_mode = 2
 script = ExtResource("1_5qnko")
 
 [node name="CopyButton" type="Button" parent="."]
@@ -83,5 +84,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 icon = SubResource("ImageTexture_xm62r")
-
-[connection signal="pressed" from="PasteButton" to="." method="_on_paste_button_pressed"]
