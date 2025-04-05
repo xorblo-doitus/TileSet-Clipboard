@@ -2,19 +2,48 @@ extends Resource
 
 
 const ALWAYS_DUPLICATED_TYPES = (
-		TYPE_DICTIONARY
-		& TYPE_ARRAY
-		& TYPE_PACKED_BYTE_ARRAY
-		& TYPE_PACKED_INT32_ARRAY
-		& TYPE_PACKED_INT64_ARRAY
-		& TYPE_PACKED_FLOAT32_ARRAY
-		& TYPE_PACKED_FLOAT64_ARRAY
-		& TYPE_PACKED_STRING_ARRAY
-		& TYPE_PACKED_VECTOR2_ARRAY
-		& TYPE_PACKED_VECTOR3_ARRAY
-		& TYPE_PACKED_COLOR_ARRAY
-		& TYPE_PACKED_VECTOR4_ARRAY
+	TYPE_DICTIONARY
+	| TYPE_ARRAY
+	| TYPE_PACKED_BYTE_ARRAY
+	| TYPE_PACKED_INT32_ARRAY
+	| TYPE_PACKED_INT64_ARRAY
+	| TYPE_PACKED_FLOAT32_ARRAY
+	| TYPE_PACKED_FLOAT64_ARRAY
+	| TYPE_PACKED_STRING_ARRAY
+	| TYPE_PACKED_VECTOR2_ARRAY
+	| TYPE_PACKED_VECTOR3_ARRAY
+	| TYPE_PACKED_COLOR_ARRAY
+	| TYPE_PACKED_VECTOR4_ARRAY
 )
+#const CANT_DUPLICATE_TYPES = (
+	#NIL,
+	#BOOL,
+	#INT,
+	#FLOAT,
+	#STRING,
+	#VECTOR2,
+	#VECTOR2I,
+	#RECT2,
+	#RECT2I,
+	#VECTOR3,
+	#VECTOR3I,
+	#TRANSFORM2D,
+	#VECTOR4,
+	#VECTOR4I,
+	#PLANE,
+	#QUATERNION,
+	#AABB,
+	#BASIS,
+	#TRANSFORM3D,
+	#PROJECTION,
+	#COLOR,
+	#STRING_NAME,
+	#NODE_PATH,
+	#RID,
+	#OBJECT,
+	#CALLABLE,
+	#SIGNAL,
+#)
 
 
 ## If true, this property is pasted
@@ -69,12 +98,23 @@ func paste(object: Object, property_name: StringName) -> void:
 
 
 func get_value_to_paste() -> Variant:
-	if (
-		duplicate
-		and (
-			typeof(cloned_base_value) & ALWAYS_DUPLICATED_TYPES
-			or cloned_base_value is Resource
-		)
-	):
-		return cloned_base_value.duplicate(true)
+	if duplicate and can_duplicate():
+		if (
+			cloned_base_value is Resource
+			or typeof(cloned_base_value) & TYPE_ARRAY | TYPE_DICTIONARY
+		):
+			return cloned_base_value.duplicate(true)
+		else:
+			return cloned_base_value.duplicate()
 	return base_value
+
+
+func can_duplicate() -> bool:
+	return (
+		typeof(cloned_base_value) & ALWAYS_DUPLICATED_TYPES
+		or cloned_base_value is Resource
+	)
+
+
+func _to_string() -> String:
+	return "Copied: " + str(base_value)
