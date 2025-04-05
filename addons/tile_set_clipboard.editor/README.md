@@ -33,6 +33,7 @@ You can **undo** and **redo** pasting:
   - [ ] Display custom data name instead of "custom_data_0", "custom_data_1", "custom_data_2"...
   - [ ] Add a way to filter property components (such as x and y for Vector2 properties)
   - [ ] (Maybe) Display value type
+  - [ ] (Maybe) Fold peering bits into one property
 - [ ] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
 - [ ] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) . Unknown feasibility.
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
