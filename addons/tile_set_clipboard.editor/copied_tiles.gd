@@ -4,7 +4,7 @@ const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copied_obje
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
 const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
 
-#var copies: Array[]
+
 @export var size: Vector2i
 @export var copies: Dictionary[Vector2i, CopiedObject]
 

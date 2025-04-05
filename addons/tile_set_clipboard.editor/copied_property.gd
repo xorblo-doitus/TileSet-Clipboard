@@ -23,7 +23,6 @@ const ALWAYS_DUPLICATED_TYPES = [
 @export var duplicate: bool = true
 
 
-#@export var copied_value: Variant
 # We basically need two members because if [member duplicate] is modified,
 # we would then need the other value
 # TODO Handle serialization (base value wouldn't always be the right reference,

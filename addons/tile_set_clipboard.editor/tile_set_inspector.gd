@@ -28,7 +28,6 @@ static func get_tiles() -> Array[TileData]:
 
 
 func _can_handle(object: Object) -> bool:
-	print(object)
 	if object.is_class("AtlasTileProxyObject"):
 		_atlas_tile_proxy = object
 		return true
@@ -72,35 +71,17 @@ func paste() -> void:
 
 
 func open_settings() -> void:
-	#EditorInterface.popup_property_selector(_atlas_tile_proxy, print)
 	var popup: ConfirmationDialog = PACKED_SETTINGS.instantiate()
 	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
-	#var base_tile: TileData
-	#if is_instance_valid(copied) and not copied.pos_to_tile.is_empty():
-		#base_tile = copied.pos_to_tile.values()[0]
-	#else:
-		##base_tile = TileData.new()
-		#pass
 	if is_instance_valid(copied):
 		tree.set_targets(copied.copies.values())
-	#tree.set_target(base_tile)
 	
 	EditorInterface.popup_dialog_centered(popup, Vector2i(0, 600))
 
 
-
-
-func honk() -> void:
-	prints("Honk!")
-	copy()
-	print(copied.zone)
-	print(copied.pos_to_tile)
-
-
 func _parse_begin(_object: Object) -> void:
 	if buttons == null:
-		print("recreate button")
 		buttons = PACKED_BUTTONS.instantiate()
 		buttons.get_node("%CopyButton").pressed.connect(copy)
 		buttons.get_node("%PasteButton").pressed.connect(paste)
@@ -112,7 +93,6 @@ func _parse_begin(_object: Object) -> void:
 		#gui_input_signal.connect(_on_tile_set_editor_gui_input)
 	
 	add_custom_control(buttons)
-	
 
 
 # TODO Find a way to use keyboard shortcut (or wait https://github.com/godotengine/godot/pull/102807)
@@ -123,15 +103,3 @@ func _parse_begin(_object: Object) -> void:
 	#elif InputMap.event_is_action(event, "ui_paste", true):
 		#paste()
 		#Scrapper._tile_set_editor.get_viewport().set_input_as_handled()
-
-
-
-#func get_source(_atlas_tile_proxy: Object) -> Array[TileData]:
-	#var _atlas_source_proxy: Object = null
-	#
-	#var tiles: Array[TileData] = []
-	#for connection in _atlas_tile_proxy.get_incoming_connections():
-		#var connected: Object = connection["signal"].get_object()
-		#if connected is TileData:
-			#tiles.append(connected)
-	#return null

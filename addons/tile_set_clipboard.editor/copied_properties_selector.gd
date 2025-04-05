@@ -17,15 +17,10 @@ const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_pr
 const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copied_properties.gd")
 
 
-
 const _COL_COPY: int = 0
 const _COL_DUPLICATE: int = _COL_COPY + 1
 const _COL_TEXT: int = _COL_DUPLICATE + 1
 const _COL_COUNT: int = _COL_TEXT + 1
-
-
-#@export_tool_button("Target Currently Selected", "ColorPick")
-#var __target_currently_selected = func(): set_target(EditorInterface.get_selection().get_selected_nodes()[0])
 
 
 var targets: Array[CopiedObject]: set = set_targets
@@ -51,14 +46,10 @@ func _init() -> void:
 	reset()
 
 
-
 func set_targets(new_targets: Array[CopiedObject]) -> void:
 	targets = new_targets
 	reset()
 	
-	
-	#var properties: Dictionary[StringName, Array[Object]]
-	#print(target.get_property_list())
 	property_map.clear()
 	for target in targets:
 		for property in target.properties:
@@ -70,17 +61,14 @@ func set_targets(new_targets: Array[CopiedObject]) -> void:
 
 	root.set_editable(_COL_COPY, true)
 	root.set_indeterminate(_COL_COPY, true)
-	#root.set_checked(_COL_COPY, true)
 	root.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 	root.set_editable(_COL_DUPLICATE, true)
 	root.set_indeterminate(_COL_DUPLICATE, true)
-	#root.set_checked(_COL_DUPLICATE, true)
 	root.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 	root.set_text(_COL_TEXT, "TileData")
 	
 	var last_item: TreeItem
 	for property_name in property_map:
-		#var property_name: String = property["name"]
 		if property_name in ignored_properties:
 			continue
 		
@@ -89,17 +77,10 @@ func set_targets(new_targets: Array[CopiedObject]) -> void:
 		last_item = item
 		
 		item.set_text(_COL_TEXT, property_name)
-		#item.set_editable(_COL_COPY, true)
 		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 		item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 		apply_state_to(item, _COL_DUPLICATE, fetch_can_duplicate(properties))
-		#if fetch_can_duplicate(properties):
-			#apply_state_to(item, _COL_DUPLICATE, State.CHECKED_CANT_EDIT)
 		apply_state_to(item, _COL_COPY, fetch_copy_state(properties))
-		#apply_state_to(item, _COL_DUPLICATE, fetch_duplicate_state(properties))
-		
-		#var type: int = fetch_duplicate_state(properties)
-		#if type & 
 	
 	last_item.propagate_check(_COL_COPY, true)
 	last_item.propagate_check(_COL_DUPLICATE, true)
@@ -151,17 +132,6 @@ func fetch_can_duplicate(properties: Array[CopiedProperty]) -> State:
 		return fetch_duplicate_state(properties)
 	
 	return State.CHECKED_CANT_EDIT
-#func fetch_can_duplicate(properties: Array[CopiedProperty]) -> bool:
-	#if properties.is_empty():
-		#return false
-	#
-	#var can_duplicate: bool = properties[-1].can_duplicate()
-	#
-	#for i in len(properties) - 1:
-		#if properties[i].can_duplicate() != can_duplicate:
-			#return false
-	#
-	#return true
 
 
 func apply_state_to(item: TreeItem, column: int, state: State) -> void:
@@ -202,19 +172,6 @@ func verify_propagation(item: TreeItem, column: int) -> void:
 	var property_name: StringName = item.get_text(_COL_TEXT)
 	var properties: Array[CopiedProperty] = property_map[property_name].properties
 	
-	
-	if (column == _COL_DUPLICATE and property_name == "flip_h"):
-		print("is_editable :")
-		print(not item.is_editable(_COL_DUPLICATE))
-		print("fetch_can_duplicate :")
-		print(fetch_can_duplicate(properties))
-		print("fetch_can_duplicate == CHECKED_CANT_EDIT :")
-		print(fetch_can_duplicate(properties) == State.CHECKED_CANT_EDIT)
-		print("map :")
-		print(properties.map(func(i): return i.can_duplicate()))
-		print("properties :")
-		print(properties)
-	
 	if (
 		column == _COL_DUPLICATE
 		and not duplicate
@@ -223,7 +180,6 @@ func verify_propagation(item: TreeItem, column: int) -> void:
 	):
 		item.set_checked(_COL_DUPLICATE, true)
 		item.set_checked.call_deferred(_COL_DUPLICATE, true)
-		print("Reforced to true")
 		duplicate = true
 
 	apply_settings_to(properties, copy, duplicate)

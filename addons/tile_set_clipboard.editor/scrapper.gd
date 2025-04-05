@@ -21,11 +21,8 @@ static var _atlas_source_editor: Object:
 static func scrap() -> void:
 	var base_control = EditorInterface.get_base_control()
 	_tile_set_editor = _get_first_node_by_class(base_control, "TileSetEditor")
-	print("_tile_set_editor: ", _tile_set_editor)
 	_atlas_source_editor = _get_first_node_by_class(_tile_set_editor, "TileSetAtlasSourceEditor")
-	print("atlas_source_editor: ", _atlas_source_editor)
 	_atlas_source_proxy = _get_first_connected_object_by_class(_atlas_source_editor, "TileSetAtlasSourceProxyObject")
-	print("_atlas_source_proxy: ", _atlas_source_proxy)
 
 
 static func get_tile_set() -> TileSet:
