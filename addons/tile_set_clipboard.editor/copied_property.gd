@@ -1,6 +1,22 @@
 extends Resource
 
 
+const ALWAYS_DUPLICATED_TYPES = (
+		TYPE_DICTIONARY
+		& TYPE_ARRAY
+		& TYPE_PACKED_BYTE_ARRAY
+		& TYPE_PACKED_INT32_ARRAY
+		& TYPE_PACKED_INT64_ARRAY
+		& TYPE_PACKED_FLOAT32_ARRAY
+		& TYPE_PACKED_FLOAT64_ARRAY
+		& TYPE_PACKED_STRING_ARRAY
+		& TYPE_PACKED_VECTOR2_ARRAY
+		& TYPE_PACKED_VECTOR3_ARRAY
+		& TYPE_PACKED_COLOR_ARRAY
+		& TYPE_PACKED_VECTOR4_ARRAY
+)
+
+
 ## If true, this property is pasted
 @export var enabled: bool = true
 ## If true, resources are duplicated (and subresources too)
@@ -30,18 +46,16 @@ static func is_serializable(property: Dictionary) -> bool:
 	return property["usage"] & PROPERTY_USAGE_STORAGE
 
 
-
 func from_value(value: Variant) -> void:
-#func from_value(dict: Dictionary[String, Variant], value: Variant) -> void:
-	#if value is Resource:
-		#copied_value = value.duplicate()
-	#else:
-		#copied_value = value
 	base_value = value
-	if value is Resource:
+	if (
+		typeof(value) & ALWAYS_DUPLICATED_TYPES
+		or (value is Resource and not value.resource_scene_unique_id.is_empty())
+	):
+		deep_copy = true
 		cloned_base_value = value.duplicate(true)
-		# cloned_base_value.resource_path = ""
 	else:
+		deep_copy = false
 		cloned_base_value = null
 
 
