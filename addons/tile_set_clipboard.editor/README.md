@@ -2,13 +2,13 @@
 
 ![Addon's icon](/icon.svg)
 
-Adds copy and pasting to the tile set editor.
+A Godot addon that adds copy and pasting to the tile set editor.
 
 
 
 ## Features showcase
 
-You can **copy** and **paste** tiles:
+You can **copy** and **paste** multiple tiles:
 
 ![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste.gif)
 
@@ -32,9 +32,40 @@ You can **filter** which **properties** are pasted:
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
 
 
+
+## Installation
+
+You can download the addon:
+- On GitHub: `Code` → `Download ZIP`.
+- Through the editor: `AssetLib` → Search for "TileSet Clipboard"
+
+*By default, this readme is included, along with it's illustrations. If you don't want them,
+do not download `addons/tile_set_clipboard.editor/README.md` nor `addons/tile_set_clipboard.editor/.assets_for_readme/*`*
+
+Modifying shortcuts is not really supported, but you can modify the addon to achieve this:
+- Open [/addons/tile_set_clipboard.editor/buttons.tscn](/addons/tile_set_clipboard.editor/buttons.tscn)
+- Select CopyButton or PasteButton
+- Expand the `shortcut` property
+- Expand the `events` property
+- Expand the first InputEvent in this Array
+- Click the "Configure" button at the top of the resource
+- Save the scene
+
+You can also exclude `*.editor/*` or `tile_set_clipboard.editor/` from your export presets,
+because this addon is editor-only.
+
+
+
+## FAQ
+
+### Doesn't Godot's TileSetEditor already have copying-and-pasting?
+
+Yes, but only for one source tile and one property at a time. This addons supports copying-and-pasting multiple properties from multiple tiles at the same time.
+
+
 ## Godot version
 
-Godot 4.4
+Minimal version: Godot 4.3
 
 
 ## Credits
