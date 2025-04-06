@@ -50,15 +50,6 @@ You can download the addon:
 *By default, this readme is included, along with it's illustrations. If you don't want them,
 do not download `addons/tile_set_clipboard.editor/README.md` nor `addons/tile_set_clipboard.editor/.assets_for_readme/*`*
 
-Modifying shortcuts is not really supported, but you can modify the addon to achieve this:
-- Open [/addons/tile_set_clipboard.editor/buttons.tscn](/addons/tile_set_clipboard.editor/buttons.tscn)
-- Select CopyButton or PasteButton
-- Expand the `shortcut` property
-- Expand the `events` property
-- Expand the first InputEvent in this Array
-- Click the "Configure" button at the top of the resource
-- Save the scene
-
 You can also exclude `*.editor/*` or `tile_set_clipboard.editor/` from your export presets,
 because this addon is editor-only.
 
@@ -70,10 +61,23 @@ because this addon is editor-only.
 
 Yes, but only for one source tile and one property at a time. This addons supports copying-and-pasting multiple properties from multiple tiles at the same time.
 
+### How to change the copy and paste shortcuts?
+
+Modifying shortcuts is not officially supported, but you can modify the addon to achieve this:
+- Open [/addons/tile_set_clipboard.editor/buttons.tscn](/addons/tile_set_clipboard.editor/buttons.tscn)
+- Select CopyButton or PasteButton
+- Expand the `shortcut` property
+- Expand the `events` property
+- Expand the first InputEvent in this Array
+- Click the "Configure" button at the top of the resource
+- Save the scene
+
+
 
 ## Godot version
 
 Minimal version: Godot 4.3
+
 
 
 ## Credits
@@ -81,6 +85,7 @@ Minimal version: Godot 4.3
 The way to interact with the tile set editor trough GDScript was found on
 [github.com/dandeliondino/tile_bit_tools](https://github.com/dandeliondino/tile_bit_tools/).
 I used some of his code in [scrapper.gd](/addons/tile_set_clipboard.editor/scrapper.gd)
+
 
 
 ## Development Status
