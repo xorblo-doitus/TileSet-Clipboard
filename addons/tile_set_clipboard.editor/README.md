@@ -35,7 +35,7 @@ You can **undo** and **redo** pasting:
   - [ ] (Maybe) Display value type
   - [ ] (Maybe) Fold peering bits into one property
 - [ ] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
-- [ ] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) . Unknown feasibility.
+- [x] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) .
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
 - [ ] Add a way to flip or rotate the copied properties (or the selection?)
 

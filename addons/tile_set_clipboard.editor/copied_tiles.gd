@@ -11,7 +11,7 @@ const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_pr
 
 
 func from_selection(selection: TileSelection) -> void:
-	size = selection.zone.size
+	size = selection.zone.size + Vector2i.ONE
 	
 	for pos in selection.pos_to_tile:
 		var copy: CopiedObject = CopiedObject.new()
@@ -20,10 +20,7 @@ func from_selection(selection: TileSelection) -> void:
 
 
 func paste(selection: TileSelection) -> void:
-	for position: Vector2i in copies:
-		var copy: CopiedObject = copies.get(position)
-		var dest_pos: Vector2i = selection.zone.position + position
-		
-		if dest_pos in selection.pos_to_tile:
-			var dest_tile: TileData = selection.pos_to_tile.get(dest_pos)
-			copy.paste(dest_tile)
+	for dest_pos: Vector2i in selection.pos_to_tile.keys():
+		var source_pos: Vector2i = (dest_pos - selection.zone.position) % size
+		if source_pos in copies:
+			copies[source_pos].paste(selection.pos_to_tile[dest_pos])
