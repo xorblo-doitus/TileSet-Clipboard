@@ -75,7 +75,6 @@ texture = ExtResource("1_kfwk1")
 3:3/0/custom_data_0 = "a"
 3:3/0/custom_data_1 = Color(0, 1, 0, 1)
 4:3/0 = 0
-4:3/0/modulate = Color(1, 0, 0, 1)
 4:3/0/custom_data_0 = "test"
 4:3/0/custom_data_1 = Color(0, 1, 0, 1)
 5:3/0 = 0
