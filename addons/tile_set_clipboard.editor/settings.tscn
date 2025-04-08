@@ -1,12 +1,43 @@
-[gd_scene load_steps=2 format=3 uid="uid://fn8w22fetusk"]
+[gd_scene load_steps=3 format=3 uid="uid://fn8w22fetusk"]
 
 [ext_resource type="PackedScene" uid="uid://dv15yco62eok5" path="res://addons/tile_set_clipboard.editor/property_selector.tscn" id="1_0asvu"]
+[ext_resource type="Script" uid="uid://csapyr2jv37qx" path="res://addons/tile_set_clipboard.editor/settings.gd" id="1_woigr"]
 
 [node name="Settings" type="AcceptDialog"]
+auto_translate_mode = 1
 title = "Settings"
+size = Vector2i(100, 117)
 ok_button_text = "Close"
+script = ExtResource("1_woigr")
 
-[node name="CopiedPropertiesSelector" parent="." instance=ExtResource("1_0asvu")]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CopiedPropertiesSelector" parent="VBoxContainer" instance=ExtResource("1_0asvu")]
 unique_name_in_owner = true
-columns = 3
+layout_mode = 2
+size_flags_vertical = 3
 ignored_properties = PackedStringArray("script", "atlas_coords", "size_in_atlas")
+
+[node name="Buttons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="EditCopyShortcut" type="Button" parent="VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Opens the shortcut in the inspector. Selecting anything else will bring back the TileSetEditor."
+text = "Edit copy shortcut"
+
+[node name="EditPasteShortcut" type="Button" parent="VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 4
+tooltip_text = "Opens the shortcut in the inspector. Selecting anything else will bring back the TileSetEditor."
+text = "Edit paste shortcut"
+
+[connection signal="pressed" from="VBoxContainer/Buttons/EditCopyShortcut" to="." method="_on_edit_copy_shortcut_pressed"]
+[connection signal="pressed" from="VBoxContainer/Buttons/EditPasteShortcut" to="." method="_on_edit_paste_shortcut_pressed"]

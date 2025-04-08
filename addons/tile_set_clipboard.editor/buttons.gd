@@ -16,6 +16,11 @@ func _ready() -> void:
 	
 	focus_mode = Control.FOCUS_ALL
 	grab_focus.call_deferred()
+	
+	if EditorInterface.get_editor_settings().has_setting("addons/tile_set_clipboard/shortcuts/copy"):
+		copy_button.shortcut = EditorInterface.get_editor_settings().get_setting("addons/tile_set_clipboard/shortcuts/copy")
+	if EditorInterface.get_editor_settings().has_setting("addons/tile_set_clipboard/shortcuts/paste"):
+		paste_button.shortcut = EditorInterface.get_editor_settings().get_setting("addons/tile_set_clipboard/shortcuts/paste")
 
 
 func load_theme() -> void:

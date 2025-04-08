@@ -63,6 +63,8 @@ Yes, but only for one source tile and one property at a time. This addons suppor
 
 ### How to change the copy and paste shortcuts?
 
+*v0.4: Added a setting*
+
 Modifying shortcuts is not officially supported, but you can modify the addon to achieve this:
 - Open [/addons/tile_set_clipboard.editor/buttons.tscn](/addons/tile_set_clipboard.editor/buttons.tscn)
 - Select CopyButton or PasteButton
