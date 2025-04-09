@@ -30,11 +30,11 @@ You can **undo** and **redo** pasting:
   - [x] Add shortcut: shift + c and shift + v
         (Found after a lot of trouble that it was possible by grabing focus and using BaseButton's `shortcut`, and that the shift modifier was the only one not intercepted by other GUI)
 - [x] Add a way to filter which properties are pasted.
-  - [ ] Display custom data name instead of "custom_data_0", "custom_data_1", "custom_data_2"...
+  - [x] Display custom data name instead of "custom_data_0", "custom_data_1", "custom_data_2"...
   - [ ] Add a way to filter property components (such as x and y for Vector2 properties)
   - [ ] (Maybe) Display value type
   - [ ] (Maybe) Fold peering bits into one property
-- [ ] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
+- [x] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
 - [x] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) .
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
 - [ ] Add a way to flip or rotate the copied properties (or the selection?)
