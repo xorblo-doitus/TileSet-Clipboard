@@ -22,6 +22,8 @@ const _COL_DUPLICATE: int = _COL_COPY + 1
 const _COL_TEXT: int = _COL_DUPLICATE + 1
 const _COL_COUNT: int = _COL_TEXT + 1
 
+const _META_PROPERTY_PATH = &"_tile_set_clipboard__property_path"
+
 
 var targets: Array[CopiedObject]: set = set_targets
 var property_map: Dictionary[StringName, CopiedProperties]
@@ -77,6 +79,7 @@ func set_targets(new_targets: Array[CopiedObject]) -> void:
 		last_item = item
 		
 		item.set_text(_COL_TEXT, property_name)
+		item.set_meta(_META_PROPERTY_PATH, property_name)
 		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 		item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 		apply_state_to(item, _COL_DUPLICATE, fetch_can_duplicate(properties))
@@ -169,7 +172,7 @@ func verify_propagation(item: TreeItem, column: int) -> void:
 	
 	var copy: bool = item.is_checked(_COL_COPY)
 	var duplicate: bool = item.is_checked(_COL_DUPLICATE)
-	var property_name: StringName = item.get_text(_COL_TEXT)
+	var property_name: StringName = item.get_meta(_META_PROPERTY_PATH)
 	var properties: Array[CopiedProperty] = property_map[property_name].properties
 	
 	if (
