@@ -21,6 +21,21 @@ func load_theme() -> void:
 	edit_paste_shortcut.icon = editor_base_control.get_theme_icon("Shortcut", "EditorIcons")
 
 
+func start_editing_shortcut(shortcut_name: String) -> void:
+	var setting_path: String = "addons/tile_set_clipboard/shortcuts/" + shortcut_name
+	if !settings.has_setting(setting_path):
+		settings.set_setting(
+			setting_path,
+			load(
+				"res://addons/tile_set_clipboard.editor/inspector_plugin/default_"
+				+ shortcut_name
+				+ "_shortcut.tres"
+			).duplicate(true)
+		)
+	
+	edit_shortcut(settings.get_setting(setting_path))
+
+
 func edit_shortcut(shortcut: Shortcut) -> void:
 	var inspector: EditorInspector = EditorInterface.get_inspector()
 	var previous_selection: Object = inspector.get_edited_object()
@@ -40,20 +55,8 @@ func edit_shortcut(shortcut: Shortcut) -> void:
 
 
 func _on_edit_copy_shortcut_pressed() -> void:
-	if !settings.has_setting("addons/tile_set_clipboard/shortcuts/copy"):
-		settings.set_setting(
-			"addons/tile_set_clipboard/shortcuts/copy",
-			load("res://addons/tile_set_clipboard.editor/inspector_plugin/default_copy_shortcut.tres").duplicate(true)
-		)
-	
-	edit_shortcut(settings.get_setting("addons/tile_set_clipboard/shortcuts/copy"))
+	start_editing_shortcut("copy")
 
 
 func _on_edit_paste_shortcut_pressed() -> void:
-	if !settings.has_setting("addons/tile_set_clipboard/shortcuts/paste"):
-		settings.set_setting(
-			"addons/tile_set_clipboard/shortcuts/paste",
-			load("res://addons/tile_set_clipboard.editor/inspector_plugin/default_paste_shortcut.tres").duplicate(true)
-		)
-	
-	edit_shortcut(settings.get_setting("addons/tile_set_clipboard/shortcuts/paste"))
+	start_editing_shortcut("paste")

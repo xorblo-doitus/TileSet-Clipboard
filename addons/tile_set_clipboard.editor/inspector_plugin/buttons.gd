@@ -2,7 +2,6 @@
 extends HBoxContainer
 
 
-@export_tool_button("Reload Theme", "Reload") var __reload_theme: Callable = load_theme 
 
 @onready var copy_button: Button = %CopyButton
 @onready var paste_button: Button = %PasteButton
