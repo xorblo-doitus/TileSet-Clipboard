@@ -9,7 +9,7 @@ static var settings: EditorSettings = EditorInterface.get_editor_settings()
 
 
 func _ready() -> void:
-	if not get_parent() is Window:
+	if owner != get_tree().edited_scene_root:
 		return
 	
 	load_theme()
