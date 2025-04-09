@@ -1,7 +1,7 @@
 extends RefCounted
 
-const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
-const Scrapper = preload("res://addons/tile_set_clipboard.editor/scrapper.gd")
+const TileSelection = preload("res://addons/tile_set_clipboard.editor/other/tile_selection.gd")
+const Scrapper = preload("res://addons/tile_set_clipboard.editor/other/scrapper.gd")
 
 var zone: Rect2i
 var pos_to_tile: Dictionary[Vector2i, TileData]

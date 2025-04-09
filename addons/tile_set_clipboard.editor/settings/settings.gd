@@ -52,7 +52,7 @@ func _on_edit_copy_shortcut_pressed() -> void:
 	if !settings.has_setting("addons/tile_set_clipboard/shortcuts/copy"):
 		settings.set_setting(
 			"addons/tile_set_clipboard/shortcuts/copy",
-			load("res://addons/tile_set_clipboard.editor/default_copy_shortcut.tres").duplicate(true)
+			load("res://addons/tile_set_clipboard.editor/inspector_plugin/default_copy_shortcut.tres").duplicate(true)
 		)
 	
 	edit_shortcut(settings.get_setting("addons/tile_set_clipboard/shortcuts/copy"))
@@ -62,7 +62,7 @@ func _on_edit_paste_shortcut_pressed() -> void:
 	if !settings.has_setting("addons/tile_set_clipboard/shortcuts/paste"):
 		settings.set_setting(
 			"addons/tile_set_clipboard/shortcuts/paste",
-			load("res://addons/tile_set_clipboard.editor/default_paste_shortcut.tres").duplicate(true)
+			load("res://addons/tile_set_clipboard.editor/inspector_plugin/default_paste_shortcut.tres").duplicate(true)
 		)
 	
 	edit_shortcut(settings.get_setting("addons/tile_set_clipboard/shortcuts/paste"))

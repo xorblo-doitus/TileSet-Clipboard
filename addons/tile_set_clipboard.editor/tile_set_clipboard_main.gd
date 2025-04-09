@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 
-const TileSetInspector = preload("res://addons/tile_set_clipboard.editor/tile_set_inspector.gd")
+const TileSetInspector = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/tile_set_inspector.gd")
 
 var inspector: EditorInspectorPlugin
 
@@ -20,12 +20,12 @@ func _enable_plugin() -> void:
 	if !EditorInterface.get_editor_settings().has_setting("addons/tile_set_clipboard/shortcuts/copy"):
 		EditorInterface.get_editor_settings().set_setting(
 			"addons/tile_set_clipboard/shortcuts/copy",
-			load("res://addons/tile_set_clipboard.editor/settings/default_copy_shortcut.tres").duplicate(true)
+			load("res://addons/tile_set_clipboard.editor/inspector_plugin/default_copy_shortcut.tres").duplicate(true)
 		)
 	if !EditorInterface.get_editor_settings().has_setting("addons/tile_set_clipboard/shortcuts/paste"):
 		EditorInterface.get_editor_settings().set_setting(
 			"addons/tile_set_clipboard/shortcuts/paste",
-			load("res://addons/tile_set_clipboard.editor/settings/default_paste_shortcut.tres").duplicate(true)
+			load("res://addons/tile_set_clipboard.editor/inspector_plugin/default_paste_shortcut.tres").duplicate(true)
 		)
 
 func _disable_plugin() -> void:

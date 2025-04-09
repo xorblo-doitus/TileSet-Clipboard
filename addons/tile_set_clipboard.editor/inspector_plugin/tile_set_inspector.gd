@@ -1,12 +1,12 @@
 extends EditorInspectorPlugin
 
-const Scrapper = preload("res://addons/tile_set_clipboard.editor/scrapper.gd")
-const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
-const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties_selector.gd")
+const Scrapper = preload("res://addons/tile_set_clipboard.editor/other/scrapper.gd")
+const TileSelection = preload("res://addons/tile_set_clipboard.editor/other/tile_selection.gd")
+const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor/settings/copied_properties_selector.gd")
 const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copying/copied_tiles.gd")
 
-const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/buttons.tscn")
-const PACKED_SETTINGS = preload("res://addons/tile_set_clipboard.editor/settings.tscn")
+const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/buttons.tscn")
+const PACKED_SETTINGS = preload("res://addons/tile_set_clipboard.editor/settings/settings.tscn")
 
 static var _atlas_tile_proxy: Object
 

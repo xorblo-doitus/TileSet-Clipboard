@@ -1,7 +1,7 @@
 extends Resource
 
 const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copying/copied_object.gd")
-const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
+const TileSelection = preload("res://addons/tile_set_clipboard.editor/other/tile_selection.gd")
 const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copying/copied_property.gd")
 
 
