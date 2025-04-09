@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://fn8w22fetusk"]
 
-[ext_resource type="PackedScene" uid="uid://dv15yco62eok5" path="res://addons/tile_set_clipboard.editor/property_selector.tscn" id="1_0asvu"]
-[ext_resource type="Script" uid="uid://csapyr2jv37qx" path="res://addons/tile_set_clipboard.editor/settings.gd" id="1_woigr"]
+[ext_resource type="PackedScene" uid="uid://dv15yco62eok5" path="res://addons/tile_set_clipboard.editor/settings/property_selector.tscn" id="1_0asvu"]
+[ext_resource type="Script" uid="uid://csapyr2jv37qx" path="res://addons/tile_set_clipboard.editor/settings/settings.gd" id="1_woigr"]
 
 [node name="Settings" type="AcceptDialog"]
 auto_translate_mode = 1

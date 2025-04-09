@@ -11,9 +11,11 @@ extends HBoxContainer
 
 
 func _ready() -> void:
-	if EditorInterface.get_base_control().is_ancestor_of(self):
-		load_theme()
+	if not EditorInterface.get_base_control().is_ancestor_of(self):
+		return
 	
+	load_theme()
+
 	focus_mode = Control.FOCUS_ALL
 	grab_focus.call_deferred()
 	

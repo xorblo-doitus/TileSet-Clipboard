@@ -9,19 +9,10 @@ static var settings: EditorSettings = EditorInterface.get_editor_settings()
 
 
 func _ready() -> void:
+	if not get_parent() is Window:
+		return
+	
 	load_theme()
-	#var editor := EditorInspector.instantiate_property_editor(
-		#load("res://addons/tile_set_clipboard.editor/default_copy_shortcut.tres").duplicate(true).events[0],
-		#TYPE_OBJECT,
-		#^"",
-		#PROPERTY_HINT_NONE,
-		#"",
-		##PROPERTY_HINT_RESOURCE_TYPE,
-		##"Shortcut",
-		#PROPERTY_USAGE_STORAGE,
-		#true
-	#)
-	#$VBoxContainer/Buttons.add_child(editor)
 
 
 func load_theme() -> void:
