@@ -11,7 +11,7 @@ extends HBoxContainer
 
 
 func _ready() -> void:
-	if owner != get_tree().edited_scene_root:
+	if owner and owner != get_tree().edited_scene_root:
 		return
 	
 	load_theme()
