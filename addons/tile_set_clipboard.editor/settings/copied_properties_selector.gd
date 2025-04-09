@@ -25,7 +25,8 @@ const _COL_COUNT: int = _COL_TEXT + 1
 const _META_PROPERTY_PATH = &"_tile_set_clipboard__property_path"
 
 
-var targets: Array[CopiedObject]: set = set_targets
+var _targets: Array[CopiedObject]
+var _translations: Dictionary[StringName, String]
 var property_map: Dictionary[StringName, CopiedProperties]
 
 
@@ -48,12 +49,13 @@ func _init() -> void:
 	reset()
 
 
-func set_targets(new_targets: Array[CopiedObject]) -> void:
-	targets = new_targets
+func build(new_targets: Array[CopiedObject], new_translations: Dictionary[StringName, String]) -> void:
+	_targets = new_targets
+	_translations = new_translations
 	reset()
 	
 	property_map.clear()
-	for target in targets:
+	for target in _targets:
 		for property in target.properties:
 			if not property in property_map:
 				property_map[property] = CopiedProperties.new()
@@ -78,7 +80,11 @@ func set_targets(new_targets: Array[CopiedObject]) -> void:
 		var item: TreeItem = create_item(root)
 		last_item = item
 		
-		item.set_text(_COL_TEXT, property_name)
+		item.set_tooltip_text(_COL_TEXT, property_name)
+		if property_name in _translations:
+			item.set_text(_COL_TEXT, _translations[property_name])
+		else:
+			item.set_text(_COL_TEXT, property_name.capitalize())
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 		item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)

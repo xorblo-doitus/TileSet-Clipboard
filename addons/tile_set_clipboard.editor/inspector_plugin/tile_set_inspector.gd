@@ -75,7 +75,7 @@ func open_settings() -> void:
 	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
 	if is_instance_valid(copied):
-		tree.set_targets(copied.copies.values())
+		tree.build(copied.copies.values(), _get_property_translations())
 	
 	EditorInterface.popup_dialog_centered(popup, Vector2i(300, 600))
 
@@ -88,3 +88,11 @@ func _parse_begin(_object: Object) -> void:
 		buttons.get_node("%SettingsButton").pressed.connect(open_settings)
 	
 	add_custom_control(buttons)
+
+
+func _get_property_translations() -> Dictionary[StringName, String]:
+	var translations: Dictionary[StringName, String] = {}
+	var tile_set: TileSet = Scrapper.get_tile_set()
+	for layer_id in tile_set.get_custom_data_layers_count():
+		translations["custom_data_" + str(layer_id)] = tile_set.get_custom_data_layer_name(layer_id)
+	return translations
