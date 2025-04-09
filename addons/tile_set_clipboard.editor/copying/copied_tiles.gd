@@ -1,8 +1,8 @@
 extends Resource
 
-const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copied_object.gd")
+const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copying/copied_object.gd")
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
-const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
+const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copying/copied_property.gd")
 
 
 @export var size: Vector2i

@@ -1,6 +1,6 @@
 extends Resource
 
-const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
+const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copying/copied_property.gd")
 
 
 @export var properties: Dictionary[StringName, CopiedProperty]

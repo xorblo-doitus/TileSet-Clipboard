@@ -12,9 +12,9 @@ enum State {
 }
 
 
-const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copied_object.gd")
-const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copied_property.gd")
-const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copied_properties.gd")
+const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copying/copied_object.gd")
+const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copying/copied_property.gd")
+const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties.gd")
 
 
 const _COL_COPY: int = 0

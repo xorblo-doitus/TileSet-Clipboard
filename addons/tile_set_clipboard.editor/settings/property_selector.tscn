@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dv15yco62eok5"]
 
-[ext_resource type="Script" uid="uid://bdmhj14xct6kr" path="res://addons/tile_set_clipboard.editor/copied_properties_selector.gd" id="1_5mcqa"]
+[ext_resource type="Script" uid="uid://bdmhj14xct6kr" path="res://addons/tile_set_clipboard.editor/settings/copied_properties_selector.gd" id="1_5mcqa"]
 
 [node name="CopiedPropertiesSelector" type="Tree"]
 offset_right = 16.0

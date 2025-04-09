@@ -2,8 +2,8 @@ extends EditorInspectorPlugin
 
 const Scrapper = preload("res://addons/tile_set_clipboard.editor/scrapper.gd")
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/tile_selection.gd")
-const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor/copied_properties_selector.gd")
-const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copied_tiles.gd")
+const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties_selector.gd")
+const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copying/copied_tiles.gd")
 
 const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/buttons.tscn")
 const PACKED_SETTINGS = preload("res://addons/tile_set_clipboard.editor/settings.tscn")
