@@ -15,9 +15,16 @@ func from_selection(selection: TileSelection) -> void:
 	size = selection.zone.size + Vector2i.ONE
 	
 	for pos in selection.pos_to_tile:
+		var relative_pos: Vector2i = pos - selection.zone.position
+		
 		var copy: CopiedObject = CopiedObject.new()
 		copy.from_object(selection.pos_to_tile[pos])
-		copies[pos - selection.zone.position] = copy
+		for copied_property in copy.properties.values():
+			copied_property.label = str(relative_pos)
+			copied_property.extended_label = "Atlas position: " + str(pos)
+		
+		copies[relative_pos] = copy
+		
 
 
 func paste(selection: TileSelection) -> void:

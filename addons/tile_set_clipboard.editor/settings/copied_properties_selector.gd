@@ -115,6 +115,9 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		item = create_item(base_item)
 		item.set_meta(_META_COPIED_PROPERTY, copied_property)
 		
+		item.set_text(_COL_TEXT, copied_property.label)
+		item.set_tooltip_text(_COL_TEXT, copied_property.extended_label)
+		
 		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 		item.set_checked(_COL_COPY, copied_property.enabled)
 		item.set_editable(_COL_COPY, true)

@@ -22,6 +22,8 @@ const ALWAYS_DUPLICATED_TYPES = [
 ## If true, resources are duplicated (and subresources too)
 @export var duplicate: bool = true
 
+@export var label: StringName
+@export var extended_label: StringName
 
 # We basically need two members because if [member duplicate] is modified,
 # we would then need the other value
