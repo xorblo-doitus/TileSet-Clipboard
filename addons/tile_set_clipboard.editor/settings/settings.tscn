@@ -31,13 +31,13 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Opens the shortcut in the inspector. Selecting anything else will bring back the TileSetEditor."
-text = "Edit copy shortcut"
+text = "Edit Copy Shortcut"
 
 [node name="EditPasteShortcut" type="Button" parent="VBoxContainer/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 4
 tooltip_text = "Opens the shortcut in the inspector. Selecting anything else will bring back the TileSetEditor."
-text = "Edit paste shortcut"
+text = "Edit Paste Shortcut"
 
 [connection signal="pressed" from="VBoxContainer/Buttons/EditCopyShortcut" to="." method="_on_edit_copy_shortcut_pressed"]
 [connection signal="pressed" from="VBoxContainer/Buttons/EditPasteShortcut" to="." method="_on_edit_paste_shortcut_pressed"]
