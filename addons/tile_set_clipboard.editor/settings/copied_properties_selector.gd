@@ -97,14 +97,9 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 		item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 		item.set_editable(_COL_DUPLICATE, true)
 		
-		#apply_state_to(item, _COL_DUPLICATE, fetch_can_duplicate(properties))
-		#apply_state_to(item, _COL_COPY, fetch_copy_state(properties))
 		_add_per_instance_item(item, properties)
 		if item.get_meta(_META_FORCED_DUPLICATE_STATE, -1) == -1:
 			all_cant_duplicate = false
-	
-	#item.propagate_check(_COL_COPY, true)
-	#item.propagate_check(_COL_DUPLICATE, true)
 	
 	if all_cant_duplicate:
 		root.set_meta(_META_FORCED_DUPLICATE_STATE, State.CHECKED_CANT_EDIT)
@@ -241,33 +236,4 @@ func _on_column_edited(item: TreeItem, column: int) -> void:
 		_COL_COPY:
 			copied_property.enabled = new_checked
 		_COL_DUPLICATE:
-			#var duplicate: bool = item.is_checked(_COL_DUPLICATE)
-			#if not duplicate and not copied_property.can_duplicate():
-				#item.set_checked(_COL_DUPLICATE, true)
-				#item.set_checked.call_deferred(_COL_DUPLICATE, true)
-				#item.set_checked.call_deferred.call_deferred(_COL_DUPLICATE, true)
-			#else:
-				#copied_property.duplicate = duplicate
 			copied_property.duplicate = new_checked
-	
-	#if item.has_meta(_META_PROPERTY_PATH):
-		#var property_name: StringName = item.get_meta(_META_PROPERTY_PATH)
-		#var properties: Array[CopiedProperty] = property_map[property_name].properties
-		#
-		#if (
-			#column == _COL_DUPLICATE
-			#and not duplicate
-			#and not item.is_editable(_COL_DUPLICATE)
-			#and fetch_can_duplicate(properties) == State.CHECKED_CANT_EDIT
-		#):
-			#item.set_checked(_COL_DUPLICATE, true)
-			#item.set_checked.call_deferred(_COL_DUPLICATE, true)
-			#duplicate = true
-#
-		#apply_settings_to(properties, copy, duplicate)
-
-
-#func apply_settings_to(properties: Array[CopiedProperty], copy: bool, duplicate: bool) -> void:
-	#for copied_property in properties:
-		#copied_property.enabled = copy
-		#copied_property.duplicate = duplicate
