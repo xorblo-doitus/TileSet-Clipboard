@@ -8,7 +8,8 @@ static var settings: EditorSettings = EditorInterface.get_editor_settings()
 
 @onready var edit_copy_shortcut: Button = $VBoxContainer/Buttons/EditCopyShortcut
 @onready var edit_paste_shortcut: Button = $VBoxContainer/Buttons/EditPasteShortcut
-@onready var remember_filters: CheckButton = $VBoxContainer/Toggles/RememberFilters
+@onready var remember_filters: CheckButton = $VBoxContainer/RememberFilters
+@onready var remember_window: CheckButton = $VBoxContainer/RememberWindow
 
 
 func _ready() -> void:
@@ -17,10 +18,17 @@ func _ready() -> void:
 	
 	load_theme()
 	
-	var remember_setting: String = Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING
-	if not settings.has_setting(remember_setting):
-		settings.set_setting(remember_setting, true)
-	remember_filters.button_pressed = settings.get_setting(remember_setting)
+	
+	
+	var remember_filter_setting: String = Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING
+	if not settings.has_setting(remember_filter_setting):
+		settings.set_setting(remember_filter_setting, true)
+	remember_filters.button_pressed = settings.get_setting(remember_filter_setting)
+	
+	var remember_window_setting: String = Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING
+	if not settings.has_setting(remember_window_setting):
+		settings.set_setting(remember_window_setting, true)
+	remember_window.button_pressed = settings.get_setting(remember_window_setting)
 
 
 func load_theme() -> void:
@@ -70,8 +78,23 @@ func _on_edit_paste_shortcut_pressed() -> void:
 	start_editing_shortcut("paste")
 
 
-func _on_check_button_toggled(toggled_on: bool) -> void:
+func _on_remember_filters_toggled(toggled_on: bool) -> void:
 	settings.set_setting(
 		Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING,
 		toggled_on
 	)
+
+
+func _on_remember_window_toggled(toggled_on: bool) -> void:
+	settings.set_setting(
+		Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING,
+		toggled_on
+	)
+
+
+func _on_exiting() -> void:
+	if settings.get_setting(Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING):
+		settings.set_setting(
+			Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT,
+			Rect2i(get_position_with_decorations(), get_size_with_decorations())
+		)

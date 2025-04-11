@@ -87,13 +87,21 @@ func paste() -> void:
 
 
 func open_settings() -> void:
+	var settings: EditorSettings = EditorInterface.get_editor_settings()
 	var popup: AcceptDialog = PACKED_SETTINGS.instantiate()
 	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
 	if is_instance_valid(copied):
 		tree.build(copied.copies.values(), _get_property_translations())
 	
-	EditorInterface.popup_dialog_centered(popup, Vector2i(300, 600))
+	if (
+		settings.get_setting(Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING)
+		and settings.has_setting(Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT)
+	):
+		print(settings.get_setting(Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT))
+		EditorInterface.popup_dialog(popup, settings.get_setting(Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT))
+	else:
+		EditorInterface.popup_dialog_centered(popup, Vector2i(300, 600))
 
 
 func _parse_begin(_object: Object) -> void:

@@ -15,6 +15,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+alignment = 1
 
 [node name="CopiedPropertiesSelector" parent="VBoxContainer" instance=ExtResource("1_0asvu")]
 unique_name_in_owner = true
@@ -40,14 +41,20 @@ size_flags_horizontal = 4
 tooltip_text = "Opens the shortcut in the inspector. Selecting anything else will bring back the TileSetEditor."
 text = "Edit Paste Shortcut"
 
-[node name="Toggles" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="RememberFilters" type="CheckButton" parent="VBoxContainer/Toggles"]
+[node name="RememberFilters" type="CheckButton" parent="VBoxContainer"]
 layout_mode = 2
 tooltip_text = "If set to false, every filter in this window will be lost thee next time you copy."
 text = "Preserve filters from a copy to another"
 
+[node name="RememberWindow" type="CheckButton" parent="VBoxContainer"]
+layout_mode = 2
+tooltip_text = "If true, closing and reopening this window will preserve the window position and size."
+text = "Preserve this window position and size"
+
+[connection signal="canceled" from="." to="." method="_on_exiting"]
+[connection signal="close_requested" from="." to="." method="_on_exiting"]
+[connection signal="confirmed" from="." to="." method="_on_exiting"]
 [connection signal="pressed" from="VBoxContainer/Buttons/EditCopyShortcut" to="." method="_on_edit_copy_shortcut_pressed"]
 [connection signal="pressed" from="VBoxContainer/Buttons/EditPasteShortcut" to="." method="_on_edit_paste_shortcut_pressed"]
-[connection signal="toggled" from="VBoxContainer/Toggles/RememberFilters" to="." method="_on_check_button_toggled"]
+[connection signal="toggled" from="VBoxContainer/RememberFilters" to="." method="_on_remember_filters_toggled"]
+[connection signal="toggled" from="VBoxContainer/RememberWindow" to="." method="_on_remember_window_toggled"]

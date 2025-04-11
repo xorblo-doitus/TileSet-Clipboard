@@ -35,6 +35,10 @@ func _disable_plugin() -> void:
 
 static func remove_editor_persistent_data() -> void:
 	remove_settings()
+	EditorInterface.get_editor_settings().set_setting(
+		Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT,
+		null
+	)
 
 
 
@@ -61,6 +65,7 @@ static func remove_settings() -> void:
 static func get_default_settings() -> Dictionary[String, Variant]:
 	return {
 		Consts.REMEMBER_FILTERS_SETTING: true,
+		Consts.REMEMBER_WINDOW_SETTING: true,
 		"shortcuts/copy": load_default_shortcut_value("copy"),
 		"shortcuts/paste": load_default_shortcut_value("paste"),
 	}
