@@ -2,7 +2,9 @@
 extends EditorPlugin
 
 
+const SETTING_PREFIX = "addons/tile_set_clipboard/"
 const TileSetInspector = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/tile_set_inspector.gd")
+
 
 var inspector: EditorInspectorPlugin
 
@@ -16,9 +18,10 @@ func _exit_tree() -> void:
 	remove_inspector_plugin(inspector)
 
 
+
 func _enable_plugin() -> void:
-	add_shortcut("copy")
-	add_shortcut("paste")
+	add_settings()
+
 
 func _disable_plugin() -> void:
 	var popup: ConfirmationDialog = ConfirmationDialog.new()
@@ -31,25 +34,41 @@ func _disable_plugin() -> void:
 
 
 static func remove_editor_persistent_data() -> void:
-	remove_shortcut("copy")
-	remove_shortcut("paste")
+	remove_settings()
 
 
-static func add_shortcut(shortcut_name: String) -> void:
-	var setting_path: String = "addons/tile_set_clipboard/shortcuts/" + shortcut_name
-	if !EditorInterface.get_editor_settings().has_setting(setting_path):
-		EditorInterface.get_editor_settings().set_setting(
-			setting_path,
-			load(
-				"res://addons/tile_set_clipboard.editor/inspector_plugin/default_"
-				+ shortcut_name
-				+ "_shortcut.tres"
-			).duplicate(true)
-		)
+
+static func add_settings() -> void:
+	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
+	var default_settings: Dictionary[String, Variant] = get_default_settings()
+	for setting in default_settings:
+		var setting_path: String = SETTING_PREFIX + setting
+		var value: Variant = default_settings[setting]
+		
+		if not editor_settings.has_setting(setting_path):
+			editor_settings.set_setting(setting_path, value)
 
 
-static func remove_shortcut(shortcut_name: String) -> void:
-	EditorInterface.get_editor_settings().set_setting(
-		"addons/tile_set_clipboard/shortcuts/" + shortcut_name,
-		null
-	)
+static func remove_settings() -> void:
+	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
+	var default_settings: Dictionary[String, Variant] = get_default_settings()
+	for setting in default_settings:
+		var setting_path: String = SETTING_PREFIX + setting
+		editor_settings.set_setting(setting_path, null)
+
+
+
+static func get_default_settings() -> Dictionary[String, Variant]:
+	return {
+		#"remember_property_filters": true,
+		"shortcuts/copy": load_default_shortcut_value("copy"),
+		"shortcuts/paste": load_default_shortcut_value("paste"),
+	}
+
+
+static func load_default_shortcut_value(shortcut_name: String) -> Shortcut:
+	return load(
+		"res://addons/tile_set_clipboard.editor/inspector_plugin/default_"
+		+ shortcut_name
+		+ "_shortcut.tres"
+	).duplicate(true)
