@@ -70,7 +70,6 @@ func copy() -> void:
 			_enabled_cache,
 			_duplicate_cache,
 		)
-	print(_enabled_cache)
 	copied = new_copy
 	
 
