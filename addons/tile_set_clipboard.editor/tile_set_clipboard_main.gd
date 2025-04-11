@@ -67,8 +67,10 @@ static func get_default_settings() -> Dictionary[String, Variant]:
 
 
 static func load_default_shortcut_value(shortcut_name: String) -> Shortcut:
-	return load(
+	var result: Shortcut = load(
 		"res://addons/tile_set_clipboard.editor/inspector_plugin/default_"
 		+ shortcut_name
 		+ "_shortcut.tres"
 	).duplicate(true)
+	result.events = result.events.map(func(event: InputEvent): return event.duplicate(true))
+	return result
