@@ -71,7 +71,6 @@ func copy() -> void:
 			_duplicate_cache,
 		)
 	copied = new_copy
-	
 
 
 func paste() -> void:

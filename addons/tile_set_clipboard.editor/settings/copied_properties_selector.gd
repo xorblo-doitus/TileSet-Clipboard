@@ -20,7 +20,8 @@ const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying
 const _COL_COPY: int = 0
 const _COL_DUPLICATE: int = _COL_COPY + 1
 const _COL_TEXT: int = _COL_DUPLICATE + 1
-const _COL_COUNT: int = _COL_TEXT + 1
+const _COL_VALUE: int = _COL_TEXT + 1
+const _COL_COUNT: int = _COL_VALUE + 1
 
 const _META_PROPERTY_PATH = &"_tile_set_clipboard__property_path"
 const _META_COPIED_PROPERTY = &"_tile_set_clipboard__copied_property"
@@ -41,6 +42,7 @@ func _init() -> void:
 	columns = _COL_COUNT
 	set_column_expand(_COL_COPY, false)
 	set_column_expand(_COL_DUPLICATE, false)
+	set_column_expand(_COL_TEXT, false)
 	item_edited.connect(_on_item_edited)
 	check_propagated_to_item.connect(_on_column_edited)
 	
@@ -72,6 +74,7 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	root.set_indeterminate(_COL_DUPLICATE, true)
 	root.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 	root.set_text(_COL_TEXT, "TileData")
+	root.set_expand_right(_COL_TEXT, true)
 	
 	var item: TreeItem
 	var all_cant_duplicate: bool = true
@@ -88,6 +91,7 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 			item.set_text(_COL_TEXT, _translations[property_name])
 		else:
 			item.set_text(_COL_TEXT, property_name.capitalize())
+		item.set_expand_right(_COL_TEXT, true)
 		
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		
@@ -117,6 +121,19 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		
 		item.set_text(_COL_TEXT, copied_property.label)
 		item.set_tooltip_text(_COL_TEXT, copied_property.extended_label)
+		item.set_expand_right(_COL_TEXT, true)
+		
+		item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
+		if copied_property.base_value is Color:
+			item.set_custom_bg_color(_COL_VALUE, copied_property.base_value)
+			item.set_custom_color(
+				_COL_VALUE,
+				Color.BLACK
+				if copied_property.base_value.srgb_to_linear().get_luminance() > 0.5
+				else Color.WHITE
+			)
+		else:
+			item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
 		
 		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 		item.set_checked(_COL_COPY, copied_property.enabled)
