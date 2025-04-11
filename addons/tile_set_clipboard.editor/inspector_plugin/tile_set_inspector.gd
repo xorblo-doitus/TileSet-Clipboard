@@ -16,7 +16,9 @@ static var _atlas_tile_proxy: Object
 
 var buttons: Control
 var copied: CopiedTiles
-#var current_selection: TileSelection
+var _enabled_cache: Dictionary[StringName, bool] = {}
+var _duplicate_cache: Dictionary[StringName, bool] = {}
+
 
 static func get_tiles() -> Array[TileData]:
 	if !is_instance_valid(_atlas_tile_proxy):
@@ -62,12 +64,13 @@ func copy() -> void:
 	if is_instance_valid(copied) and EditorInterface.get_editor_settings().get_setting(
 		Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING
 	):
-		var src: Dictionary[StringName, CopiedProperties] = flatten(copied)
-		var target: Dictionary[StringName, CopiedProperties] = flatten(new_copy)
-		print("src:", src)
-		print("target:", target)
-		CopiedObject.transfer_states(src, target)
-	
+		CopiedObject.transfer_states(
+			flatten(copied),
+			flatten(new_copy),
+			_enabled_cache,
+			_duplicate_cache,
+		)
+	print(_enabled_cache)
 	copied = new_copy
 	
 

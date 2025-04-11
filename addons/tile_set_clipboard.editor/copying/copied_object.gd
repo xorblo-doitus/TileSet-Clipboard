@@ -32,28 +32,74 @@ func paste(object: Object) -> void:
 
 static func transfer_states(
 	from: Dictionary[StringName, CopiedProperties],
-	to: Dictionary[StringName, CopiedProperties]
+	to: Dictionary[StringName, CopiedProperties],
+	enabled_cache: Dictionary[StringName, bool],
+	duplicate_cache: Dictionary[StringName, bool],
 ) -> void:
+	var to_properties: Array[CopiedProperty]
+	
 	for property_name in from:
 		var from_properties: Array[CopiedProperty] = from[property_name].properties
-		var to_properties: Array[CopiedProperty] = to[property_name].properties
-		var enabled: AgregatedState = agregate_enabled(from_properties)
-		match enabled:
-			AgregatedState.ALL_ENABLED:
+		if from_properties.is_empty():
+			if property_name in enabled_cache:
+				var enabled: bool = enabled_cache[property_name]
 				for copied_property in to_properties:
-					copied_property.enabled = true
-			AgregatedState.ALL_DISABLED:
+					copied_property.enabled = enabled
+			if property_name in duplicate_cache:
+				var duplicate: bool = duplicate_cache[property_name]
 				for copied_property in to_properties:
-					copied_property.enabled = false
+					copied_property.duplicate = duplicate
+			continue
 		
-		var duplicate: AgregatedState = agregate_enabled(from_properties)
-		match duplicate:
-			AgregatedState.ALL_ENABLED:
+		var agregated_enabled: AgregatedState = agregate_enabled(from_properties)
+		var agregated_duplicate: AgregatedState = agregate_enabled(from_properties)
+		
+		save_agregation(enabled_cache, property_name, agregated_enabled)
+		save_agregation(duplicate_cache, property_name, agregated_duplicate)
+		
+		if property_name in to:
+			to_properties = to[property_name].properties
+			match agregated_enabled:
+				AgregatedState.ALL_ENABLED:
+					for copied_property in to_properties:
+						copied_property.enabled = true
+				AgregatedState.ALL_DISABLED:
+					for copied_property in to_properties:
+						copied_property.enabled = false
+			
+			match agregated_duplicate:
+				AgregatedState.ALL_ENABLED:
+					for copied_property in to_properties:
+						copied_property.duplicate = true
+				AgregatedState.ALL_DISABLED:
+					for copied_property in to_properties:
+						copied_property.duplicate = false
+	
+	for property_name in to:
+		if not property_name in from:
+			to_properties = to[property_name].properties
+			if property_name in enabled_cache:
+				var enabled: bool = enabled_cache[property_name]
 				for copied_property in to_properties:
-					copied_property.duplicate = true
-			AgregatedState.ALL_DISABLED:
+					copied_property.enabled = enabled
+			if property_name in duplicate_cache:
+				var duplicate: bool = duplicate_cache[property_name]
 				for copied_property in to_properties:
-					copied_property.duplicate = false
+					copied_property.duplicate = duplicate
+
+
+static func save_agregation(
+	cache: Dictionary[StringName, bool],
+	property_name: StringName,
+	state: AgregatedState,
+) -> void:
+	match state:
+		AgregatedState.ALL_ENABLED:
+			cache[property_name] = true
+		AgregatedState.MIXED:
+			cache.erase(property_name)
+		AgregatedState.ALL_DISABLED:
+			cache[property_name] = false
 
 
 static func agregate_enabled(properties: Array[CopiedProperty]) -> AgregatedState:
