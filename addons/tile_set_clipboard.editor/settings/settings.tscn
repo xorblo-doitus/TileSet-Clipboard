@@ -40,5 +40,14 @@ size_flags_horizontal = 4
 tooltip_text = "Opens the shortcut in the inspector. Selecting anything else will bring back the TileSetEditor."
 text = "Edit Paste Shortcut"
 
+[node name="Toggles" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="RememberFilters" type="CheckButton" parent="VBoxContainer/Toggles"]
+layout_mode = 2
+tooltip_text = "If set to false, every filter in this window will be lost thee next time you copy."
+text = "Preserve filters from a copy to another"
+
 [connection signal="pressed" from="VBoxContainer/Buttons/EditCopyShortcut" to="." method="_on_edit_copy_shortcut_pressed"]
 [connection signal="pressed" from="VBoxContainer/Buttons/EditPasteShortcut" to="." method="_on_edit_paste_shortcut_pressed"]
+[connection signal="toggled" from="VBoxContainer/Toggles/RememberFilters" to="." method="_on_check_button_toggled"]
