@@ -1,11 +1,14 @@
 @tool
 extends AcceptDialog
 
+const Consts = preload("res://addons/tile_set_clipboard.editor/consts.gd")
+
 
 static var settings: EditorSettings = EditorInterface.get_editor_settings()
 
 @onready var edit_copy_shortcut: Button = $VBoxContainer/Buttons/EditCopyShortcut
 @onready var edit_paste_shortcut: Button = $VBoxContainer/Buttons/EditPasteShortcut
+@onready var remember_filters: CheckButton = $VBoxContainer/Toggles/RememberFilters
 
 
 func _ready() -> void:
@@ -13,6 +16,11 @@ func _ready() -> void:
 		return
 	
 	load_theme()
+	
+	var remember_setting: String = Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING
+	if not settings.has_setting(remember_setting):
+		settings.set_setting(remember_setting, true)
+	remember_filters.button_pressed = settings.get_setting(remember_setting)
 
 
 func load_theme() -> void:
@@ -60,3 +68,10 @@ func _on_edit_copy_shortcut_pressed() -> void:
 
 func _on_edit_paste_shortcut_pressed() -> void:
 	start_editing_shortcut("paste")
+
+
+func _on_check_button_toggled(toggled_on: bool) -> void:
+	settings.set_setting(
+		Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING,
+		toggled_on
+	)
