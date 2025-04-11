@@ -1,9 +1,12 @@
 extends EditorInspectorPlugin
 
+const Consts = preload("res://addons/tile_set_clipboard.editor/consts.gd")
 const Scrapper = preload("res://addons/tile_set_clipboard.editor/other/scrapper.gd")
 const TileSelection = preload("res://addons/tile_set_clipboard.editor/other/tile_selection.gd")
 const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor/settings/copied_properties_selector.gd")
 const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copying/copied_tiles.gd")
+const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copying/copied_object.gd")
+const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties.gd")
 
 const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/buttons.tscn")
 const PACKED_SETTINGS = preload("res://addons/tile_set_clipboard.editor/settings/settings.tscn")
@@ -51,10 +54,22 @@ func get_pastable_properties(tile: TileData) -> PackedStringArray:
 
 
 func copy() -> void:
-	copied = CopiedTiles.new()
-	copied.from_selection(
+	var new_copy: CopiedTiles = CopiedTiles.new()
+	new_copy.from_selection(
 		TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
 	)
+	
+	if is_instance_valid(copied) and EditorInterface.get_editor_settings().get_setting(
+		Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING
+	):
+		var src: Dictionary[StringName, CopiedProperties] = flatten(copied)
+		var target: Dictionary[StringName, CopiedProperties] = flatten(new_copy)
+		print("src:", src)
+		print("target:", target)
+		CopiedObject.transfer_states(src, target)
+	
+	copied = new_copy
+	
 
 
 func paste() -> void:
@@ -96,3 +111,15 @@ func _get_property_translations() -> Dictionary[StringName, String]:
 	for layer_id in tile_set.get_custom_data_layers_count():
 		translations["custom_data_" + str(layer_id)] = tile_set.get_custom_data_layer_name(layer_id)
 	return translations
+
+
+static func flatten(copied_tiles: CopiedTiles) -> Dictionary[StringName, CopiedProperties]:
+	var result: Dictionary[StringName, CopiedProperties] = {}
+	for copied_object: CopiedObject in copied_tiles.copies.values():
+		for property_name in copied_object.properties:
+			if not result.has(property_name):
+				result[property_name] = CopiedProperties.new()
+			result[property_name].properties.append(
+				copied_object.properties[property_name]
+			)
+	return result

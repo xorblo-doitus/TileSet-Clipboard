@@ -2,8 +2,8 @@
 extends EditorPlugin
 
 
-const SETTING_PREFIX = "addons/tile_set_clipboard/"
 const TileSetInspector = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/tile_set_inspector.gd")
+const Consts = preload("res://addons/tile_set_clipboard.editor/consts.gd")
 
 
 var inspector: EditorInspectorPlugin
@@ -42,7 +42,7 @@ static func add_settings() -> void:
 	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
 	var default_settings: Dictionary[String, Variant] = get_default_settings()
 	for setting in default_settings:
-		var setting_path: String = SETTING_PREFIX + setting
+		var setting_path: String = Consts.SETTING_PREFIX + setting
 		var value: Variant = default_settings[setting]
 		
 		if not editor_settings.has_setting(setting_path):
@@ -53,14 +53,14 @@ static func remove_settings() -> void:
 	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
 	var default_settings: Dictionary[String, Variant] = get_default_settings()
 	for setting in default_settings:
-		var setting_path: String = SETTING_PREFIX + setting
+		var setting_path: String = Consts.SETTING_PREFIX + setting
 		editor_settings.set_setting(setting_path, null)
 
 
 
 static func get_default_settings() -> Dictionary[String, Variant]:
 	return {
-		#"remember_property_filters": true,
+		Consts.REMEMBER_FILTERS_SETTING: true,
 		"shortcuts/copy": load_default_shortcut_value("copy"),
 		"shortcuts/paste": load_default_shortcut_value("paste"),
 	}
