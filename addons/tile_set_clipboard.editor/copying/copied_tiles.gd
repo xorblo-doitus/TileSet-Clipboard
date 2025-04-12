@@ -30,8 +30,8 @@ func from_selection(selection: TileSelection) -> void:
 func paste(selection: TileSelection) -> void:
 	if selection.zone.size == Vector2i.ZERO:
 		paste_from_upper_left_corner(selection)
-	
-	paste_repeat(selection)
+	else:
+		paste_repeat(selection)
 
 
 func paste_repeat(selection: TileSelection) -> void:
