@@ -27,6 +27,11 @@ Controls are intuitive; they work mostly like in a **spreadsheet**:
 
 ![Pasting multiple tiles into one tile, pasting patterns](/addons/tile_set_clipboard.editor/.assets_for_readme/spreadsheet_like.gif)
 
+Features a terrain replacer too:
+
+![Pasting multiple tiles into one tile, pasting patterns](/addons/tile_set_clipboard.editor/.assets_for_readme/terrain_swapper.gif)
+
+
 
 ### Static images
 
