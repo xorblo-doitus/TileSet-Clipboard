@@ -23,6 +23,11 @@ You can **undo** and **redo** pasting:
 ![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/undo_redo.gif)
 
 
+Controls are intuitive; they work mostly like in a **spreadsheet**:
+
+![Pasting multiple tiles into one tile, pasting patterns](/addons/tile_set_clipboard.editor/.assets_for_readme/spreadsheet_like.gif)
+
+
 
 ## RoadMap
 
