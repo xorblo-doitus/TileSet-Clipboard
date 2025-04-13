@@ -95,6 +95,8 @@ func open_settings() -> void:
 	
 	if is_instance_valid(copied):
 		tree.build(copied.copies.values(), _get_property_translations())
+	else:
+		tree.build([], {})
 	
 	if (
 		settings.get_setting(Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING)

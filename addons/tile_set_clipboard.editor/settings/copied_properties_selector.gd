@@ -36,19 +36,12 @@ var property_map: Dictionary[StringName, CopiedProperties]
 @export var ignored_properties: PackedStringArray = [
 	"script",
 ]
+@export var empty_targets_message: String = "Nothing to choose properties from."
 
 
 func _init() -> void:
-	columns = _COL_COUNT
-	set_column_expand(_COL_COPY, false)
-	set_column_expand(_COL_DUPLICATE, false)
-	set_column_expand(_COL_TEXT, false)
 	item_edited.connect(_on_item_edited)
 	check_propagated_to_item.connect(_on_column_edited)
-	
-	set_column_title(_COL_COPY, "Paste")
-	set_column_title(_COL_DUPLICATE, "Duplicate")
-	set_column_title(_COL_TEXT, "Property")
 	
 	reset()
 
@@ -59,6 +52,12 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	reset()
 	
 	property_map.clear()
+	
+	if _targets.is_empty():
+		columns = 1
+		set_column_title(0, empty_targets_message)
+		return
+	
 	for target in _targets:
 		for property in target.properties:
 			if not property in property_map:
@@ -226,6 +225,16 @@ func apply_state_to(item: TreeItem, column: int, state: State) -> void:
 
 
 func reset() -> void:
+	columns = _COL_COUNT
+	
+	set_column_expand(_COL_COPY, false)
+	set_column_expand(_COL_DUPLICATE, false)
+	set_column_expand(_COL_TEXT, false)
+	
+	set_column_title(_COL_COPY, "Paste")
+	set_column_title(_COL_DUPLICATE, "Duplicate")
+	set_column_title(_COL_TEXT, "Property")
+	
 	clear()
 
 

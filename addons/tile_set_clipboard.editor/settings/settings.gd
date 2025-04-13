@@ -18,8 +18,6 @@ func _ready() -> void:
 	
 	load_theme()
 	
-	
-	
 	var remember_filter_setting: String = Consts.SETTING_PREFIX + Consts.REMEMBER_FILTERS_SETTING
 	if not settings.has_setting(remember_filter_setting):
 		settings.set_setting(remember_filter_setting, true)
