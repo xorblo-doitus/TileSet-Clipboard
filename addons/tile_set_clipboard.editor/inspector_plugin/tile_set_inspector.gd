@@ -57,8 +57,10 @@ func get_pastable_properties(tile: TileData) -> PackedStringArray:
 
 func copy() -> void:
 	var new_copy: CopiedTiles = CopiedTiles.new()
+	var tiles: Array[TileData] = get_tiles()
+	
 	new_copy.from_selection(
-		TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
+		TileSelection.from_data_and_source(tiles, Scrapper.get_source())
 	)
 	
 	if is_instance_valid(copied) and EditorInterface.get_editor_settings().get_setting(
@@ -77,7 +79,7 @@ func paste() -> void:
 	if copied == null:
 		return
 	
-	var current_selection: TileSelection = TileSelection.from_data_and_set(get_tiles(), Scrapper.get_tile_set())
+	var current_selection: TileSelection = TileSelection.from_data_and_source(get_tiles(), Scrapper.get_source())
 	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
 	
 	history.create_action("Paste tiles in tile set")

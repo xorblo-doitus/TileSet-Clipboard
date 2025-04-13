@@ -17,17 +17,33 @@ const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying
 
 
 func from_object(object: Object) -> void:
-	for property_dict: Dictionary[String, Variant] \
-	in CopiedProperty.get_serializable_properties(object):
-		var copied_property: CopiedProperty = CopiedProperty.new()
-		copied_property.from_value(object.get(property_dict["name"]))
-		properties[property_dict["name"]] = copied_property
+	return from_object_and_properties(
+		object,
+		CopiedProperty.get_serializable_properties(object).map(func(dict): return)
+	)
 
+
+func from_object_and_properties(object: Object, property_names: Array[StringName]) -> void:
+	
+	
+	for property_name in property_names:
+		var copied_property: CopiedProperty = CopiedProperty.new()
+		copied_property.from_value(object.get(property_name))
+		properties[property_name] = copied_property
 
 
 func paste(object: Object) -> void:
 	for property_name in properties:
 		properties[property_name].paste(object, property_name)
+
+
+static func get_property_names(objects: Array[Object]) -> Array[StringName]:
+	# Use a dictionary to reduce complexity from O(n²) to O(n)
+	var dict: Dictionary[StringName, bool] = {}
+	for object in objects:
+		for property_name in CopiedProperty.get_serializable_property_names(object):
+			dict[property_name] = true
+	return dict.keys()
 
 
 static func transfer_states(

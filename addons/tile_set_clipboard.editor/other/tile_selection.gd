@@ -5,16 +5,17 @@ const Scrapper = preload("res://addons/tile_set_clipboard.editor/other/scrapper.
 
 var zone: Rect2i
 var pos_to_tile: Dictionary[Vector2i, TileData]
+var source: TileSetAtlasSource
 
 
-static func from_data_and_set(tiles: Array[TileData], tile_set: TileSet) -> TileSelection:
+static func from_data_and_source(tiles: Array[TileData], source: TileSetAtlasSource) -> TileSelection:
 	var selection: TileSelection = TileSelection.new()
-	selection.find_tiles(tiles, tile_set)
+	selection.find_tiles(tiles, source)
 	return selection
 
 
-func find_tiles(tiles: Array[TileData], tile_set: TileSet) -> void:
-	var source: TileSetSource = Scrapper.get_source()
+func find_tiles(tiles: Array[TileData], _source: TileSetAtlasSource) -> void:
+	source = _source
 	var min: Vector2i = Vector2i.MAX
 	var max: Vector2i = Vector2i.MIN
 	

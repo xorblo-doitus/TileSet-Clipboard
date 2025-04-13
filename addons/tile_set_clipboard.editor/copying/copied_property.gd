@@ -39,12 +39,23 @@ const ALWAYS_DUPLICATED_TYPES = [
 
 
 static func get_serializable_properties(object: Object) -> Array[Dictionary]:
-	return object.get_property_list().filter(is_serializable) as Array[Dictionary]
+	return object.get_property_list().filter(is_serializable)
+
+static func get_serializable_property_names(object: Object) -> Array[StringName]:
+	var result: Array[StringName]
+	result.assign(get_serializable_properties(object).map(get_property_name_untyped))
+	return result
 
 
 static func is_serializable(property: Dictionary) -> bool:
 #static func is_serializable(property: Dictionary[String, Variant]) -> bool:
 	return property["usage"] & PROPERTY_USAGE_STORAGE
+
+
+static func get_property_name(property_dict: Dictionary[StringName, Variant]) -> StringName:
+	return property_dict["name"]
+static func get_property_name_untyped(property_dict: Dictionary) -> StringName:
+	return property_dict["name"]
 
 
 func from_value(value: Variant) -> void:
