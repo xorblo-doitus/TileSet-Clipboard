@@ -61,19 +61,13 @@ because this addon is editor-only.
 
 Yes, but only for one source tile and one property at a time. This addons supports copying-and-pasting multiple properties from multiple tiles at the same time.
 
-### How to change the copy and paste shortcuts?
+### Can I copy and paste from a TileSet to another?
 
-*v0.4: Added a setting*
-
-Modifying shortcuts is not officially supported, but you can modify the addon to achieve this:
-- Open [/addons/tile_set_clipboard.editor/buttons.tscn](/addons/tile_set_clipboard.editor/buttons.tscn)
-- Select CopyButton or PasteButton
-- Expand the `shortcut` property
-- Expand the `events` property
-- Expand the first InputEvent in this Array
-- Click the "Configure" button at the top of the resource
-- Save the scene
-
+Yes, but the addon won't paste properties that are set to the default value
+(because `get_property_list()` don't give them for some reason). As a workaround,
+you can copy-paste a tile from the destination TileSet to the source TileSet at an unused place.
+When copying tiles from that source, the addon will notice that a cell in the source has more properties and will copy
+the unmodified properties.
 
 
 ## Godot version
