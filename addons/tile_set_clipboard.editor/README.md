@@ -43,6 +43,8 @@ Settings:
 
 ## RoadMap
 
+I leave the "maybe" stuff for now. If you are interested by their implementation, open an issue.
+
 - [x] ~~Add shortcut (ctrl + c and ctr + v). Unknown feasibility. Maybe needs [this Godot PR](https://github.com/godotengine/godot/pull/102807).~~
   - [x] Add shortcut: shift + c and shift + v
         (Found after a lot of trouble that it was possible by grabing focus and using BaseButton's `shortcut`, and that the shift modifier was the only one not intercepted by other GUI)
@@ -103,4 +105,4 @@ I used some of his code in [scrapper.gd](/addons/tile_set_clipboard.editor/scrap
 
 ## Development Status
 
-Under development
+LTS (Only bugfixes)
