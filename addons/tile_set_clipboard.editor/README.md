@@ -28,6 +28,18 @@ Controls are intuitive; they work mostly like in a **spreadsheet**:
 ![Pasting multiple tiles into one tile, pasting patterns](/addons/tile_set_clipboard.editor/.assets_for_readme/spreadsheet_like.gif)
 
 
+### Static images
+
+Property filters and quick settings:
+
+![Property filters and quick settings](/addons/tile_set_clipboard.editor/.assets_for_readme/property_filter.png)
+
+
+Settings:
+
+![Settings](/addons/tile_set_clipboard.editor/.assets_for_readme/settings.png)
+
+
 
 ## RoadMap
 
