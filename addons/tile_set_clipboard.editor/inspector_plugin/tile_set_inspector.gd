@@ -20,6 +20,9 @@ var copied: CopiedTiles
 var _enabled_cache: Dictionary[StringName, bool] = {}
 var _duplicate_cache: Dictionary[StringName, bool] = {}
 
+var _last_from: int = 0
+var _last_to: int = 0
+
 
 static func get_tiles() -> Array[TileData]:
 	if !is_instance_valid(_atlas_tile_proxy):
@@ -128,7 +131,17 @@ func add_copy_paste_buttons() -> void:
 
 func add_swap_terrain_buttons() -> void:
 	var terrain_buttons = PACKED_SWAP_TERRAIN.instantiate()
+	terrain_buttons.ready.connect(func():
+		terrain_buttons.set_from(_last_from)
+		terrain_buttons.set_to(_last_to),
+		CONNECT_ONE_SHOT
+	)
 	terrain_buttons.swap_requested.connect(search_and_replace_terrain)
+	terrain_buttons.tree_exiting.connect(func():
+		_last_from = terrain_buttons.get_from()
+		_last_to = terrain_buttons.get_to(),
+		CONNECT_ONE_SHOT
+	)
 	
 	add_custom_control(terrain_buttons)
 

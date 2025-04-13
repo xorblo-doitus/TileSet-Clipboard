@@ -16,6 +16,20 @@ func _ready() -> void:
 	load_theme()
 
 
+func set_from(new: int) -> void:
+	from.value = new
+	
+func set_to(new: int) -> void:
+	to.value = new
+
+
+func get_from() -> int:
+	return from.value
+	
+func get_to() -> int:
+	return to.value
+
+
 func load_theme() -> void:
 	var editor_base_control: Control = EditorInterface.get_base_control()
 	change_terrain.icon = editor_base_control.get_theme_icon("ArrowRight", "EditorIcons")
