@@ -19,13 +19,11 @@ const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying
 func from_object(object: Object) -> void:
 	return from_object_and_properties(
 		object,
-		CopiedProperty.get_serializable_properties(object).map(func(dict): return)
+		CopiedProperty.get_serializable_property_names(object)
 	)
 
 
 func from_object_and_properties(object: Object, property_names: Array[StringName]) -> void:
-	
-	
 	for property_name in property_names:
 		var copied_property: CopiedProperty = CopiedProperty.new()
 		copied_property.from_value(object.get(property_name))
@@ -33,6 +31,20 @@ func from_object_and_properties(object: Object, property_names: Array[StringName
 
 
 func paste(object: Object) -> void:
+	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	var object_properties: Array[StringName] = get_property_names([object])
+	var backups: Dictionary[StringName, Variant] = {}
+	for property_name in object_properties:
+		if not properties.has(property_name):
+			backups[property_name] = object.get(property_name)
+	
+	paste_unsafe(object)
+	
+	for property_name in backups:
+		history.add_undo_property(object, property_name, backups[property_name])
+
+
+func paste_unsafe(object: Object) -> void:
 	for property_name in properties:
 		properties[property_name].paste(object, property_name)
 
