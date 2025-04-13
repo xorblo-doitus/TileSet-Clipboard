@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0la6techl8ay"]
+
+[ext_resource type="Script" uid="uid://1peqda1j357h" path="res://addons/tile_set_clipboard.editor/inspector_plugin/swap_terrain/swap_terrain.gd" id="1_2ym80"]
+
+[node name="SwapTerrain" type="HBoxContainer"]
+offset_right = 305.0
+offset_bottom = 146.0
+focus_mode = 2
+script = ExtResource("1_2ym80")
+
+[node name="ChangeTerrain" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Search and replace terrain in selection"
+text = "Change Terrain
+"
+
+[node name="FromLabel" type="Label" parent="."]
+layout_mode = 2
+text = "From"
+
+[node name="From" type="SpinBox" parent="."]
+layout_mode = 2
+
+[node name="ToLabel" type="Label" parent="."]
+layout_mode = 2
+text = "To"
+
+[node name="To" type="SpinBox" parent="."]
+layout_mode = 2
+
+[connection signal="pressed" from="ChangeTerrain" to="." method="_on_change_terrain_pressed"]

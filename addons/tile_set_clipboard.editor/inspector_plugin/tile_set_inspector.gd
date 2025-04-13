@@ -7,14 +7,15 @@ const CopiedPropertiesSelector = preload("res://addons/tile_set_clipboard.editor
 const CopiedTiles = preload("res://addons/tile_set_clipboard.editor/copying/copied_tiles.gd")
 const CopiedObject = preload("res://addons/tile_set_clipboard.editor/copying/copied_object.gd")
 const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties.gd")
+const TerrainSwapper = preload("res://addons/tile_set_clipboard.editor/other/terrain_swapper.gd")
 
 const PACKED_BUTTONS = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/buttons.tscn")
 const PACKED_SETTINGS = preload("res://addons/tile_set_clipboard.editor/settings/settings.tscn")
+const PACKED_SWAP_TERRAIN = preload("res://addons/tile_set_clipboard.editor/inspector_plugin/swap_terrain/swap_terrain.tscn")
 
 static var _atlas_tile_proxy: Object
 
 
-var buttons: Control
 var copied: CopiedTiles
 var _enabled_cache: Dictionary[StringName, bool] = {}
 var _duplicate_cache: Dictionary[StringName, bool] = {}
@@ -107,14 +108,29 @@ func open_settings() -> void:
 		EditorInterface.popup_dialog_centered(popup, Vector2i(300, 600))
 
 
+func search_and_replace_terrain(from: int, to: int) -> void:
+	TerrainSwapper.swap(get_tiles(), from, to)
+
+
 func _parse_begin(_object: Object) -> void:
-	if buttons == null:
-		buttons = PACKED_BUTTONS.instantiate()
-		buttons.get_node("%CopyButton").pressed.connect(copy)
-		buttons.get_node("%PasteButton").pressed.connect(paste)
-		buttons.get_node("%SettingsButton").pressed.connect(open_settings)
+	add_copy_paste_buttons()
+	add_swap_terrain_buttons()
+
+
+func add_copy_paste_buttons() -> void:
+	var buttons = PACKED_BUTTONS.instantiate()
+	buttons.get_node("%CopyButton").pressed.connect(copy)
+	buttons.get_node("%PasteButton").pressed.connect(paste)
+	buttons.get_node("%SettingsButton").pressed.connect(open_settings)
 	
 	add_custom_control(buttons)
+
+
+func add_swap_terrain_buttons() -> void:
+	var terrain_buttons = PACKED_SWAP_TERRAIN.instantiate()
+	terrain_buttons.swap_requested.connect(search_and_replace_terrain)
+	
+	add_custom_control(terrain_buttons)
 
 
 func _get_property_translations() -> Dictionary[StringName, String]:
