@@ -98,7 +98,6 @@ func open_settings() -> void:
 		settings.get_setting(Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING)
 		and settings.has_setting(Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT)
 	):
-		print(settings.get_setting(Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT))
 		EditorInterface.popup_dialog(popup, settings.get_setting(Consts.SETTING_PREFIX + Consts.SAVED_WINDOW_RECT))
 	else:
 		EditorInterface.popup_dialog_centered(popup, Vector2i(300, 600))
