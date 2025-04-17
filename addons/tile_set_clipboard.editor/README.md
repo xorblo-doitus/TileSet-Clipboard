@@ -102,7 +102,9 @@ the unmodified properties.
 
 ## Godot version
 
-Minimal version: Godot 4.3
+Minimal Godot version: 4.4
+
+See the [4.3-backport](https://github.com/xorblo-doitus/TileSet-Clipboard/tree/4.3-backport) branch for a Godot 4.3 compatible version.
 
 
 
