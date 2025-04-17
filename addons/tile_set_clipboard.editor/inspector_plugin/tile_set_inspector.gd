@@ -17,8 +17,10 @@ static var _atlas_tile_proxy: Object
 
 
 var copied: CopiedTiles
-var _enabled_cache: Dictionary[StringName, bool] = {}
-var _duplicate_cache: Dictionary[StringName, bool] = {}
+# var _enabled_cache: Dictionary[StringName, bool] = {}
+var _enabled_cache: Dictionary = {}
+# var _duplicate_cache: Dictionary[StringName, bool] = {}
+var _duplicate_cache: Dictionary = {}
 
 var _last_from: int = 0
 var _last_to: int = 0
@@ -84,7 +86,7 @@ func paste() -> void:
 		return
 	
 	var current_selection: TileSelection = TileSelection.from_data_and_source(get_tiles(), Scrapper.get_source())
-	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	var history: EditorUndoRedoManager = EditorPlugin.new().get_undo_redo()
 	
 	history.create_action("Paste tiles in tile set")
 	copied.paste(current_selection)
@@ -98,7 +100,9 @@ func open_settings() -> void:
 	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
 	if is_instance_valid(copied):
-		tree.build(copied.copies.values(), _get_property_translations())
+		var copies: Array[CopiedObject] = []
+		copies.assign(copied.copies.values())
+		tree.build(copies, _get_property_translations())
 	else:
 		tree.build([], {})
 	
@@ -146,16 +150,20 @@ func add_swap_terrain_buttons() -> void:
 	add_custom_control(terrain_buttons)
 
 
-func _get_property_translations() -> Dictionary[StringName, String]:
-	var translations: Dictionary[StringName, String] = {}
+# func _get_property_translations() -> Dictionary[StringName, String]:
+func _get_property_translations() -> Dictionary:
+	# var translations: Dictionary[StringName, String] = {}
+	var translations: Dictionary = {}
 	var tile_set: TileSet = Scrapper.get_tile_set()
 	for layer_id in tile_set.get_custom_data_layers_count():
 		translations["custom_data_" + str(layer_id)] = tile_set.get_custom_data_layer_name(layer_id)
 	return translations
 
 
-static func flatten(copied_tiles: CopiedTiles) -> Dictionary[StringName, CopiedProperties]:
-	var result: Dictionary[StringName, CopiedProperties] = {}
+# static func flatten(copied_tiles: CopiedTiles) -> Dictionary[StringName, CopiedProperties]:
+static func flatten(copied_tiles: CopiedTiles) -> Dictionary:
+	# var result: Dictionary[StringName, CopiedProperties] = {}
+	var result: Dictionary = {}
 	for copied_object: CopiedObject in copied_tiles.copies.values():
 		for property_name in copied_object.properties:
 			if not result.has(property_name):

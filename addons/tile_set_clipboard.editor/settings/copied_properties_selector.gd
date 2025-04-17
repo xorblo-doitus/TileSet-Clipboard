@@ -29,8 +29,10 @@ const _META_FORCED_DUPLICATE_STATE = &"_tile_set_clipboard__forced_state"
 
 
 var _targets: Array[CopiedObject]
-var _translations: Dictionary[StringName, String]
-var property_map: Dictionary[StringName, CopiedProperties]
+# var _translations: Dictionary[StringName, String]
+var _translations: Dictionary
+# var property_map: Dictionary[StringName, CopiedProperties]
+var property_map: Dictionary
 
 
 @export var ignored_properties: PackedStringArray = [
@@ -46,7 +48,8 @@ func _init() -> void:
 	reset()
 
 
-func build(new_targets: Array[CopiedObject], new_translations: Dictionary[StringName, String]) -> void:
+# func build(new_targets: Array[CopiedObject], new_translations: Dictionary[StringName, String]) -> void:
+func build(new_targets: Array[CopiedObject], new_translations: Dictionary) -> void:
 	_targets = new_targets
 	_translations = new_translations
 	reset()

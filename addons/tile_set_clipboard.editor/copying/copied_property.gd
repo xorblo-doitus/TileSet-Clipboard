@@ -52,7 +52,8 @@ static func is_serializable(property: Dictionary) -> bool:
 	return property["usage"] & PROPERTY_USAGE_STORAGE
 
 
-static func get_property_name(property_dict: Dictionary[StringName, Variant]) -> StringName:
+# static func get_property_name(property_dict: Dictionary[StringName, Variant]) -> StringName:
+static func get_property_name(property_dict: Dictionary) -> StringName:
 	return property_dict["name"]
 static func get_property_name_untyped(property_dict: Dictionary) -> StringName:
 	return property_dict["name"]
@@ -75,7 +76,7 @@ func paste(object: Object, property_name: StringName) -> void:
 	if not enabled:
 		return
 	
-	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	var history: EditorUndoRedoManager = EditorPlugin.new().get_undo_redo()
 	history.add_do_property(object, property_name, get_value_to_paste())
 	history.add_undo_property(object, property_name, object.get(property_name))
 

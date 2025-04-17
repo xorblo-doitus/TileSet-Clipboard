@@ -26,7 +26,7 @@ static func swap(tiles: Array[TileData], from: int, to: int) -> void:
 	if from == to:
 		return
 	
-	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	var history: EditorUndoRedoManager = EditorPlugin.new().get_undo_redo()
 	
 	history.create_action("Replace all terrain " + str(from) + " to " + str(to))
 	

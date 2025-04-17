@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0la6techl8ay"]
 
-[ext_resource type="Script" uid="uid://1peqda1j357h" path="res://addons/tile_set_clipboard.editor/inspector_plugin/swap_terrain/swap_terrain.gd" id="1_2ym80"]
+[ext_resource type="Script" path="res://addons/tile_set_clipboard.editor/inspector_plugin/swap_terrain/swap_terrain.gd" id="1_2ym80"]
 
 [node name="SwapTerrain" type="HBoxContainer"]
 offset_right = 305.0

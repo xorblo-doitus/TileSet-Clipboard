@@ -44,7 +44,8 @@ static func remove_editor_persistent_data() -> void:
 
 static func add_settings() -> void:
 	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
-	var default_settings: Dictionary[String, Variant] = get_default_settings()
+	# var default_settings: Dictionary[String, Variant] = get_default_settings()
+	var default_settings: Dictionary = get_default_settings()
 	for setting in default_settings:
 		var setting_path: String = Consts.SETTING_PREFIX + setting
 		var value: Variant = default_settings[setting]
@@ -55,14 +56,16 @@ static func add_settings() -> void:
 
 static func remove_settings() -> void:
 	var editor_settings: EditorSettings = EditorInterface.get_editor_settings()
-	var default_settings: Dictionary[String, Variant] = get_default_settings()
+	# var default_settings: Dictionary[String, Variant] = get_default_settings()
+	var default_settings: Dictionary = get_default_settings()
 	for setting in default_settings:
 		var setting_path: String = Consts.SETTING_PREFIX + setting
 		editor_settings.set_setting(setting_path, null)
 
 
 
-static func get_default_settings() -> Dictionary[String, Variant]:
+# static func get_default_settings() -> Dictionary[String, Variant]:
+static func get_default_settings() -> Dictionary:
 	return {
 		Consts.REMEMBER_FILTERS_SETTING: true,
 		Consts.REMEMBER_WINDOW_SETTING: true,

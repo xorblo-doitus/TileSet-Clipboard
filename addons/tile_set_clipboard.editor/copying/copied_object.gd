@@ -12,7 +12,8 @@ const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copying/c
 const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties.gd")
 
 
-@export var properties: Dictionary[StringName, CopiedProperty]
+# @export var properties: Dictionary[StringName, CopiedProperty]
+@export var properties: Dictionary
 
 
 
@@ -31,9 +32,10 @@ func from_object_and_properties(object: Object, property_names: Array[StringName
 
 
 func paste(object: Object) -> void:
-	var history: EditorUndoRedoManager = EditorInterface.get_editor_undo_redo()
+	var history: EditorUndoRedoManager = EditorPlugin.new().get_undo_redo()
 	var object_properties: Array[StringName] = get_property_names([object])
-	var backups: Dictionary[StringName, Variant] = {}
+	# var backups: Dictionary[StringName, Variant] = {}
+	var backups: Dictionary = {}
 	for property_name in object_properties:
 		if not properties.has(property_name):
 			backups[property_name] = object.get(property_name)
@@ -51,18 +53,25 @@ func paste_unsafe(object: Object) -> void:
 
 static func get_property_names(objects: Array[Object]) -> Array[StringName]:
 	# Use a dictionary to reduce complexity from O(n²) to O(n)
-	var dict: Dictionary[StringName, bool] = {}
+	# var dict: Dictionary[StringName, bool] = {}
+	var dict: Dictionary = {}
 	for object in objects:
 		for property_name in CopiedProperty.get_serializable_property_names(object):
 			dict[property_name] = true
-	return dict.keys()
+	var result: Array[StringName] = []
+	result.assign(dict.keys())
+	return result
 
 
 static func transfer_states(
-	from: Dictionary[StringName, CopiedProperties],
-	to: Dictionary[StringName, CopiedProperties],
-	enabled_cache: Dictionary[StringName, bool],
-	duplicate_cache: Dictionary[StringName, bool],
+	# from: Dictionary[StringName, CopiedProperties],
+	# to: Dictionary[StringName, CopiedProperties],
+	# enabled_cache: Dictionary[StringName, bool],
+	# duplicate_cache: Dictionary[StringName, bool],
+	from: Dictionary,
+	to: Dictionary,
+	enabled_cache: Dictionary,
+	duplicate_cache: Dictionary,
 ) -> void:
 	var to_properties: Array[CopiedProperty]
 	
@@ -117,7 +126,8 @@ static func transfer_states(
 
 
 static func save_agregation(
-	cache: Dictionary[StringName, bool],
+	# cache: Dictionary[StringName, bool],
+	cache: Dictionary,
 	property_name: StringName,
 	state: AgregatedState,
 ) -> void:

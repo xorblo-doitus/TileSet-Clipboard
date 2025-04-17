@@ -8,7 +8,8 @@ const Helper = preload("res://addons/tile_set_clipboard.editor/other/helper.gd")
 
 
 @export var size: Vector2i
-@export var copies: Dictionary[Vector2i, CopiedObject]
+# @export var copies: Dictionary[Vector2i, CopiedObject]
+@export var copies: Dictionary
 
 
 
