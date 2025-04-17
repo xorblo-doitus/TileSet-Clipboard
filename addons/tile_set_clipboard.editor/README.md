@@ -2,7 +2,7 @@
 
 ![Addon's icon](/icon.svg)
 
-*This version is a backport for Godot 4.3. It displays some errors when pasting/undoing peering bits, but they are harmless.*
+*This version is a backport for Godot 4.3. It displays some errors when pasting/undoing peering bits, but they are harmless. See the [main](https://github.com/xorblo-doitus/TileSet-Clipboard/tree/main) branch for the up-to-date addon.*
 
 A Godot addon that adds advanced copying-and-pasting to the tile set editor.
 
