@@ -76,9 +76,13 @@ func paste(object: Object, property_name: StringName) -> void:
 	if not enabled:
 		return
 	
-	var history: EditorUndoRedoManager = EditorPlugin.new().get_undo_redo()
-	history.add_do_property(object, property_name, get_value_to_paste())
-	history.add_undo_property(object, property_name, object.get(property_name))
+	var curent_value: Variant = object.get(property_name)
+	var to_paste: Variant = get_value_to_paste()
+	
+	if curent_value != to_paste:
+		var history: EditorUndoRedoManager = EditorPlugin.new().get_undo_redo()
+		history.add_do_property(object, property_name, to_paste)
+		history.add_undo_property(object, property_name, curent_value)
 
 
 func get_value_to_paste() -> Variant:
