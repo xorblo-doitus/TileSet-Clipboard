@@ -2,6 +2,8 @@
 
 ![Addon's icon](/icon.svg)
 
+*This version is a backport for Godot 4.3. It displays some errors when pasting/undoing peering bits, but they are harmless.*
+
 A Godot addon that adds advanced copying-and-pasting to the tile set editor.
 
 
@@ -116,4 +118,4 @@ I used some of his code in [scrapper.gd](/addons/tile_set_clipboard.editor/scrap
 
 ## Development Status
 
-LTS (Only bugfixes)
+This backport will probably not receive any updates.
