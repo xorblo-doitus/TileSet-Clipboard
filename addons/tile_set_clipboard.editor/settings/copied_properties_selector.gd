@@ -28,15 +28,23 @@ const _META_COPIED_PROPERTY = &"_tile_set_clipboard__copied_property"
 const _META_FORCED_DUPLICATE_STATE = &"_tile_set_clipboard__forced_state"
 
 
-var _targets: Array[CopiedObject]
-var _translations: Dictionary[StringName, String]
-var property_map: Dictionary[StringName, CopiedProperties]
-
-
 @export var ignored_properties: PackedStringArray = [
 	"script",
 ]
 @export var empty_targets_message: String = "Nothing to choose properties from."
+
+@export_group("Grouping")
+## If true, properties will be grouped by slash components.
+## E.g.: [code]peering_bits/right_side[/code] and [code]peering_bits/left_side[/code]
+## under [code]peering_bits[/code]
+@export var auto_group: bool = true
+
+
+var _property_map: Dictionary[StringName, CopiedProperties]
+var _targets: Array[CopiedObject]
+var _translations: Dictionary[StringName, String]
+var _groups: Dictionary[StringName, TreeItem]
+
 
 
 func _init() -> void:
@@ -51,7 +59,7 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	_translations = new_translations
 	reset()
 	
-	property_map.clear()
+	_property_map.clear()
 	
 	if _targets.is_empty():
 		columns = 1
@@ -60,9 +68,9 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	
 	for target in _targets:
 		for property in target.properties:
-			if not property in property_map:
-				property_map[property] = CopiedProperties.new()
-			property_map[property].properties.append(target.properties[property])
+			if not property in _property_map:
+				_property_map[property] = CopiedProperties.new()
+			_property_map[property].properties.append(target.properties[property])
 	
 	var root: TreeItem = create_item()
 
@@ -78,18 +86,18 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	var item: TreeItem
 	var all_cant_duplicate: bool = true
 	
-	for property_name in property_map:
+	for property_name in _property_map:
 		if property_name in ignored_properties:
 			continue
 		
-		var properties: Array[CopiedProperty] = property_map[property_name].properties
-		item = create_item(root)
+		var properties: Array[CopiedProperty] = _property_map[property_name].properties
+		item = create_item(_get_tree_parent(root, property_name))
 		
 		item.set_tooltip_text(_COL_TEXT, property_name)
 		if property_name in _translations:
 			item.set_text(_COL_TEXT, _translations[property_name])
 		else:
-			item.set_text(_COL_TEXT, property_name.capitalize())
+			item.set_text(_COL_TEXT, property_name.get_file().capitalize())
 		item.set_expand_right(_COL_TEXT, true)
 		
 		item.set_meta(_META_PROPERTY_PATH, property_name)
@@ -103,6 +111,12 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 		_add_per_instance_item(item, properties)
 		if item.get_meta(_META_FORCED_DUPLICATE_STATE, -1) == -1:
 			all_cant_duplicate = false
+	
+	var groups: Array[TreeItem] = _groups.values()
+	groups.reverse()
+	for group: TreeItem in groups:
+		print(group.get_tooltip_text(_COL_TEXT))
+		_check_editable(group, _COL_DUPLICATE)
 	
 	if all_cant_duplicate:
 		root.set_meta(_META_FORCED_DUPLICATE_STATE, State.CHECKED_CANT_EDIT)
@@ -158,6 +172,55 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		base_item.set_meta(_META_FORCED_DUPLICATE_STATE, State.CHECKED_CANT_EDIT)
 		base_item.set_checked(_COL_DUPLICATE, true)
 		base_item.set_editable(_COL_DUPLICATE, false)
+
+
+func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
+	if not auto_group:
+		return root
+	
+	var direct_parent_path: String = path.get_base_dir()
+	if direct_parent_path in _groups:
+		return _groups[direct_parent_path]
+	
+	var parent: TreeItem = root
+	var splits: PackedStringArray = path.split("/")
+	var current_path: String
+	for i in len(splits) - 1:
+		var split: String = splits[i]
+		current_path += split
+		
+		if not current_path in _groups:
+			parent = create_item(parent)
+			
+			parent.set_tooltip_text(_COL_TEXT, current_path)
+			if split in _translations:
+				parent.set_text(_COL_TEXT, _translations[split])
+			else:
+				parent.set_text(_COL_TEXT, split.capitalize())
+			parent.set_expand_right(_COL_TEXT, true)
+			
+			parent.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
+			parent.set_editable(_COL_COPY, true)
+			
+			parent.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
+			parent.set_editable(_COL_DUPLICATE, true)
+			
+			parent.collapsed = true
+			
+			_groups[current_path] = parent
+		
+		current_path += "/"
+	return parent
+
+
+func _check_editable(item: TreeItem, column: int) -> void:
+	for child in item.get_children():
+		if child.is_editable(column):
+			item.set_editable(column, true)
+			item.set_checked(column, child.is_checked(column))
+			return
+	
+	item.set_editable(column, false)
 
 
 func fetch_copy_state(properties: Array[CopiedProperty]) -> State:
