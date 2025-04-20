@@ -115,7 +115,6 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	var groups: Array[TreeItem] = _groups.values()
 	groups.reverse()
 	for group: TreeItem in groups:
-		print(group.get_tooltip_text(_COL_TEXT))
 		_check_editable(group, _COL_DUPLICATE)
 	
 	if all_cant_duplicate:
