@@ -1,4 +1,4 @@
-# [BETA] TileSet Clipboard
+# TileSet Clipboard
 
 ![Addon's icon](/icon.svg)
 
