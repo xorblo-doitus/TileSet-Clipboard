@@ -16,6 +16,10 @@ run/main_scene="uid://xvjxxwj4xc0r"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/explore-editor-theme/plugin.cfg", "res://addons/tile_set_clipboard.editor/plugin.cfg", "res://addons/zylann.editor_debugger/plugin.cfg")
