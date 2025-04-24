@@ -19,7 +19,8 @@ const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying
 
 const _COL_COPY: int = 0
 const _COL_DUPLICATE: int = _COL_COPY + 1
-const _COL_TEXT: int = _COL_DUPLICATE + 1
+const _COL_ICON: int = _COL_DUPLICATE + 1
+const _COL_TEXT: int = _COL_ICON + 1
 const _COL_VALUE: int = _COL_TEXT + 1
 const _COL_COUNT: int = _COL_VALUE + 1
 
@@ -64,6 +65,7 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	if _targets.is_empty():
 		columns = 1
 		set_column_title(0, empty_targets_message)
+		column_titles_visible = true
 		return
 	
 	for target in _targets:
@@ -102,10 +104,10 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 		
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		
-		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
+		setup_copy_cell(item)
 		item.set_editable(_COL_COPY, true)
 		
-		item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
+		setup_duplicate_cell(item)
 		item.set_editable(_COL_DUPLICATE, true)
 		
 		_add_per_instance_item(item, properties)
@@ -131,6 +133,8 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		item = create_item(base_item)
 		item.set_meta(_META_COPIED_PROPERTY, copied_property)
 		
+		item.set_icon(_COL_ICON, AnyIcon.get_variant_icon(copied_property.base_value))
+		
 		item.set_text(_COL_TEXT, copied_property.label)
 		item.set_tooltip_text(_COL_TEXT, copied_property.extended_label)
 		item.set_expand_right(_COL_TEXT, true)
@@ -147,11 +151,11 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		else:
 			item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
 		
-		item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
+		setup_copy_cell(item)
 		item.set_checked(_COL_COPY, copied_property.enabled)
 		item.set_editable(_COL_COPY, true)
 		
-		item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
+		setup_duplicate_cell(item)
 		var duplicate_state: State = State.CHECKED_CANT_EDIT
 		if copied_property.can_duplicate():
 			if copied_property.duplicate:
@@ -291,13 +295,22 @@ func reset() -> void:
 	
 	set_column_expand(_COL_COPY, false)
 	set_column_expand(_COL_DUPLICATE, false)
+	set_column_expand(_COL_ICON, false)
 	set_column_expand(_COL_TEXT, false)
 	
-	set_column_title(_COL_COPY, "Paste")
-	set_column_title(_COL_DUPLICATE, "Duplicate")
-	set_column_title(_COL_TEXT, "Property")
+	column_titles_visible = false
 	
 	clear()
+
+
+func setup_copy_cell(item: TreeItem) -> void:
+	item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
+	item.set_tooltip_text(_COL_COPY, "Copy")
+
+
+func setup_duplicate_cell(item: TreeItem) -> void:
+	item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
+	item.set_tooltip_text(_COL_DUPLICATE, "Duplicate")
 
 
 func _on_item_edited() -> void:
