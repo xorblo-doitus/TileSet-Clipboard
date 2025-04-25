@@ -2,20 +2,37 @@
 class_name AnyIcon
 extends Object
 
-## A singleton providing easy access to icons representing class and types.
+## A singleton providing easy access to icons representing classes and types.
 ##
-## Use [method get_variant_icon] for the highest abstraction.
+## Use [method get_variant_icon] for the highest abstraction when getting an icon by value.
+## There are some methods related to preperty types too, such as [method get_property_icon_from_dict].
+
+
+## If true, methods can return a generated icon for union of classes
+## by concatenating thes icons from left to right.
+## Else, fallback is used.
+## This can happen for example when getting the icon of a property dict,
+## for instance with the material property, whose class_name is
+## "CanvasItemMaterial,ShaderMaterial".
+static var allow_generating_union_icons: bool = true
 
 
 ## Shortcut for [method EditorInterface.get_base_control].
-static var base_control: Control = EditorInterface.get_base_control()
+static var base_control: Control = EditorInterface.get_base_control():
+	set(new):
+		printerr("AnyIcon.base_control is read-only.")
 ## The icon displayed when no valid icon is found.
-static var icon_not_found: Texture2D = base_control.get_theme_icon(&"")
+static var icon_not_found: Texture2D = base_control.get_theme_icon(&""):
+	set(new):
+		printerr("AnyIcon.icon_not_found is read-only.")
 
 
 static var _ICON_ANNOTATION_REGEX := RegEx.create_from_string(
 	r"""@icon\s*?\((?:[^#]*?(?:)*?(?:#.*)*?)*?(?<delimiter>"+|'+)(?<path>.*?)\k<delimiter>(?:.|\n)*?\)"""
 )
+
+# static var _union_cache: Dictionary[String, ImageTexture] = {}
+static var _union_cache: Dictionary = {}
 
 
 ## This static method returns the icon that represents the type of the passed value.
@@ -107,6 +124,32 @@ static func get_script_icon(script: Script, fallback: StringName = &"") -> Textu
 	return get_builtin_class_icon(script.get_instance_base_type())
 
 
+## Generates an icon for a comma-separated union of classes
+## by concatenating thes icons from left to right.
+## [br][br][b]Example:[/b] "CanvasItemMaterial,ShaderMaterial" 
+static func generate_union_class_icon(union_name: String, fallback: StringName = &"") -> ImageTexture:
+	if union_name in _union_cache:
+		return _union_cache[union_name]
+	
+	var image: Image = Image.create_empty(1, 1, true, Image.FORMAT_RGBA8)
+	
+	for name in union_name.split(","):
+		var icon: Texture2D = get_class_icon(name, fallback)
+		var add_at_x: int = image.get_width()
+		image.crop(
+			image.get_width() + icon.get_width(),
+			max(image.get_height(), icon.get_height())
+		)
+		image.blit_rect(
+			icon.get_image(),
+			Rect2i(Vector2i.ZERO, icon.get_size()),
+			Vector2i(add_at_x, 0),
+		)
+	
+	_union_cache[union_name] = ImageTexture.create_from_image(image)
+	return _union_cache[union_name]
+
+
 ## See also [method get_custom_class_icon], [method get_builtin_class_icon]
 ## and [method get_type_icon].
 static func get_class_icon(name: StringName, fallback: StringName = &"") -> Texture2D:
@@ -118,6 +161,9 @@ static func get_class_icon(name: StringName, fallback: StringName = &"") -> Text
 
 ## See also [method get_class_icon]
 static func get_custom_class_icon(name: StringName, fallback: StringName = &"") -> Texture2D:
+	if allow_generating_union_icons and "," in name:
+		return generate_union_class_icon(name, fallback)
+	
 	var found: bool = true
 	var global_class_list := ProjectSettings.get_global_class_list()
 	
@@ -154,6 +200,9 @@ static func get_type_icon(type: Variant.Type, fallback: StringName = &"") -> Tex
 
 ## See also [method get_class_icon]
 static func get_builtin_class_icon(class_name_: StringName, fallback: StringName = &"") -> Texture2D:
+	if allow_generating_union_icons and "," in class_name_:
+		return generate_union_class_icon(class_name_, fallback)
+	
 	var result: Texture2D = get_icon(class_name_)
 	
 	while result == icon_not_found and ClassDB.class_exists(class_name_):
