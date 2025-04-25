@@ -19,8 +19,7 @@ const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying
 
 const _COL_COPY: int = 0
 const _COL_DUPLICATE: int = _COL_COPY + 1
-const _COL_ICON: int = _COL_DUPLICATE + 1
-const _COL_TEXT: int = _COL_ICON + 1
+const _COL_TEXT: int = _COL_DUPLICATE + 1
 const _COL_VALUE: int = _COL_TEXT + 1
 const _COL_COUNT: int = _COL_VALUE + 1
 
@@ -133,7 +132,7 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		item = create_item(base_item)
 		item.set_meta(_META_COPIED_PROPERTY, copied_property)
 		
-		item.set_icon(_COL_ICON, AnyIcon.get_variant_icon(copied_property.base_value))
+		item.set_icon(_COL_TEXT, AnyIcon.get_variant_icon(copied_property.base_value))
 		
 		item.set_text(_COL_TEXT, copied_property.label)
 		item.set_tooltip_text(_COL_TEXT, copied_property.extended_label)
@@ -295,7 +294,6 @@ func reset() -> void:
 	
 	set_column_expand(_COL_COPY, false)
 	set_column_expand(_COL_DUPLICATE, false)
-	set_column_expand(_COL_ICON, false)
 	set_column_expand(_COL_TEXT, false)
 	
 	column_titles_visible = false

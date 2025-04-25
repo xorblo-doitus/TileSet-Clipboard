@@ -6,6 +6,5 @@
 offset_right = 16.0
 offset_bottom = 17.0
 columns = 5
-column_titles_visible = true
 script = ExtResource("1_5mcqa")
 ignored_properties = PackedStringArray("script")
