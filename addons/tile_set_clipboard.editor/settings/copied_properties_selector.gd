@@ -180,6 +180,7 @@ func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
 			parent = create_item(parent)
 			
 			_setup_main_cell(parent)
+			parent.set_icon(_COL_MAIN, AnyIcon.get_icon(&"Folder"))
 			
 			parent.set_tooltip_text(_COL_MAIN, current_path)
 			if split in _translations:
