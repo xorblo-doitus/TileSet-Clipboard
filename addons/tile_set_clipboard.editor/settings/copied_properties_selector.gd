@@ -6,9 +6,7 @@ enum State {
 	UNCHECKED,
 	INTERMEDIATE,
 	CHECKED,
-	UNCHECKED_CANT_EDIT,
-	INTERMEDIATE_CANT_EDIT,
-	CHECKED_CANT_EDIT,
+	NO_CHECK,
 }
 
 
@@ -25,7 +23,6 @@ const _COL_COUNT: int = _COL_VALUE + 1
 
 const _META_PROPERTY_PATH = &"_tile_set_clipboard__property_path"
 const _META_COPIED_PROPERTY = &"_tile_set_clipboard__copied_property"
-const _META_FORCED_DUPLICATE_STATE = &"_tile_set_clipboard__forced_state"
 
 
 @export var ignored_properties: PackedStringArray = [
@@ -74,15 +71,11 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 			_property_map[property].properties.append(target.properties[property])
 	
 	var root: TreeItem = create_item()
-
-	root.set_editable(_COL_COPY, true)
+	
+	_setup_copy_cell(root)
 	root.set_indeterminate(_COL_COPY, true)
-	root.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
-	root.set_editable(_COL_DUPLICATE, true)
-	root.set_indeterminate(_COL_DUPLICATE, true)
-	root.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
-	root.set_text(_COL_TEXT, "TileData")
-	root.set_expand_right(_COL_TEXT, true)
+	
+	_set_text_cell(root, "TileData")
 	
 	var item: TreeItem
 	var all_cant_duplicate: bool = true
@@ -96,32 +89,26 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 		
 		item.set_tooltip_text(_COL_TEXT, property_name)
 		if property_name in _translations:
-			item.set_text(_COL_TEXT, _translations[property_name])
+			_set_text_cell(item, _translations[property_name])
 		else:
-			item.set_text(_COL_TEXT, property_name.get_file().capitalize())
-		item.set_expand_right(_COL_TEXT, true)
+			_set_text_cell(item, property_name.get_file().capitalize())
 		
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		
-		setup_copy_cell(item)
-		item.set_editable(_COL_COPY, true)
-		
-		setup_duplicate_cell(item)
-		item.set_editable(_COL_DUPLICATE, true)
+		_setup_copy_cell(item)
 		
 		_add_per_instance_item(item, properties)
-		if item.get_meta(_META_FORCED_DUPLICATE_STATE, -1) == -1:
+		
+		if item.get_cell_mode(_COL_DUPLICATE) == TreeItem.CELL_MODE_CHECK:
 			all_cant_duplicate = false
 	
 	var groups: Array[TreeItem] = _groups.values()
 	groups.reverse()
 	for group: TreeItem in groups:
-		_check_editable(group, _COL_DUPLICATE)
+		_setup_can_duplicate_from_children(group)
 	
-	if all_cant_duplicate:
-		root.set_meta(_META_FORCED_DUPLICATE_STATE, State.CHECKED_CANT_EDIT)
-		root.set_checked(_COL_DUPLICATE, true)
-		root.set_editable(_COL_DUPLICATE, false)
+	if not all_cant_duplicate:
+		_setup_duplicate_cell(root)
 
 
 func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedProperty]) -> void:
@@ -134,9 +121,8 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		
 		item.set_icon(_COL_TEXT, AnyIcon.get_variant_icon(copied_property.base_value))
 		
-		item.set_text(_COL_TEXT, copied_property.label)
+		_set_text_cell(item, copied_property.label)
 		item.set_tooltip_text(_COL_TEXT, copied_property.extended_label)
-		item.set_expand_right(_COL_TEXT, true)
 		
 		item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
 		if copied_property.base_value is Color:
@@ -150,30 +136,25 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		else:
 			item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
 		
-		setup_copy_cell(item)
+		_setup_copy_cell(item)
 		item.set_checked(_COL_COPY, copied_property.enabled)
-		item.set_editable(_COL_COPY, true)
 		
-		setup_duplicate_cell(item)
-		var duplicate_state: State = State.CHECKED_CANT_EDIT
+		_setup_duplicate_cell(item)
+		var duplicate_state: State = State.NO_CHECK
 		if copied_property.can_duplicate():
 			if copied_property.duplicate:
 				duplicate_state = State.CHECKED
 			else:
 				duplicate_state = State.UNCHECKED
 			all_cant_duplicate = false
-		else:
-			item.set_meta(_META_FORCED_DUPLICATE_STATE, State.CHECKED_CANT_EDIT)
-		apply_state_to(item, _COL_DUPLICATE, duplicate_state)
+		_apply_state_to(item, _COL_DUPLICATE, duplicate_state)
+	
+	if not all_cant_duplicate:
+		_setup_duplicate_cell(base_item)
 	
 	base_item.collapsed = true
 	item.propagate_check(_COL_COPY, true)
 	item.propagate_check(_COL_DUPLICATE, true)
-	
-	if all_cant_duplicate:
-		base_item.set_meta(_META_FORCED_DUPLICATE_STATE, State.CHECKED_CANT_EDIT)
-		base_item.set_checked(_COL_DUPLICATE, true)
-		base_item.set_editable(_COL_DUPLICATE, false)
 
 
 func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
@@ -204,9 +185,6 @@ func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
 			parent.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 			parent.set_editable(_COL_COPY, true)
 			
-			parent.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
-			parent.set_editable(_COL_DUPLICATE, true)
-			
 			parent.collapsed = true
 			
 			_groups[current_path] = parent
@@ -215,17 +193,15 @@ func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
 	return parent
 
 
-func _check_editable(item: TreeItem, column: int) -> void:
+func _setup_can_duplicate_from_children(item: TreeItem) -> void:
 	for child in item.get_children():
-		if child.is_editable(column):
-			item.set_editable(column, true)
-			item.set_checked(column, child.is_checked(column))
+		if child.is_editable(_COL_DUPLICATE):
+			_setup_duplicate_cell(item)
+			item.set_checked(_COL_DUPLICATE, child.is_checked(_COL_DUPLICATE))
 			return
-	
-	item.set_editable(column, false)
 
 
-func fetch_copy_state(properties: Array[CopiedProperty]) -> State:
+func _fetch_copy_state(properties: Array[CopiedProperty]) -> State:
 	if properties.is_empty():
 		return State.UNCHECKED
 	
@@ -241,7 +217,7 @@ func fetch_copy_state(properties: Array[CopiedProperty]) -> State:
 	return State.UNCHECKED
 
 
-func fetch_duplicate_state(properties: Array[CopiedProperty]) -> State:
+func _fetch_duplicate_state(properties: Array[CopiedProperty]) -> State:
 	if properties.is_empty():
 		return State.UNCHECKED
 	
@@ -257,35 +233,35 @@ func fetch_duplicate_state(properties: Array[CopiedProperty]) -> State:
 	return State.UNCHECKED
 
 
-func fetch_can_duplicate(properties: Array[CopiedProperty]) -> State:
+func _fetch_can_duplicate(properties: Array[CopiedProperty]) -> State:
 	if properties.is_empty():
-		return State.CHECKED_CANT_EDIT
+		return State.NO_CHECK
 	
 	var can_duplicate: bool = properties[-1].can_duplicate()
 	
 	for i in len(properties) - 1:
 		if properties[i].can_duplicate() != can_duplicate:
-			return fetch_duplicate_state(properties)
+			return _fetch_duplicate_state(properties)
 	
 	if can_duplicate:
-		return fetch_duplicate_state(properties)
+		return _fetch_duplicate_state(properties)
 	
-	return State.CHECKED_CANT_EDIT
+	return State.NO_CHECK
 
 
-func apply_state_to(item: TreeItem, column: int, state: State) -> void:
+func _apply_state_to(item: TreeItem, column: int, state: State) -> void:
 	match state:
-		State.UNCHECKED, State.UNCHECKED_CANT_EDIT:
+		State.UNCHECKED:
 			item.set_checked(column, false)
-		State.INTERMEDIATE, State.INTERMEDIATE_CANT_EDIT:
+			item.set_indeterminate(column, false)
+		State.INTERMEDIATE:
+			item.set_checked(column, false)
 			item.set_indeterminate(column, true)
-		State.CHECKED, State.CHECKED_CANT_EDIT:
+		State.CHECKED:
 			item.set_checked(column, true)
-	
-	match state:
-		State.UNCHECKED, State.INTERMEDIATE, State.CHECKED:
-			item.set_editable(column, true)
-		State.UNCHECKED_CANT_EDIT, State.INTERMEDIATE_CANT_EDIT, State.CHECKED_CANT_EDIT:
+			item.set_indeterminate(column, false)
+		State.NO_CHECK:
+			item.set_cell_mode(column, TreeItem.CELL_MODE_STRING)
 			item.set_editable(column, false)
 
 
@@ -301,32 +277,69 @@ func reset() -> void:
 	clear()
 
 
-func setup_copy_cell(item: TreeItem) -> void:
+func _setup_copy_cell(item: TreeItem) -> void:
 	item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
 	item.set_tooltip_text(_COL_COPY, "Copy")
+	item.set_editable(_COL_COPY, true)
 
 
-func setup_duplicate_cell(item: TreeItem) -> void:
+func _setup_duplicate_cell(item: TreeItem) -> void:
 	item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 	item.set_tooltip_text(_COL_DUPLICATE, "Duplicate")
+	item.set_editable(_COL_DUPLICATE, true)
+
+
+func _set_text_cell(item: TreeItem, text: String) -> void:
+	item.set_text(_COL_TEXT, text)
+	item.set_expand_right(_COL_TEXT, true)
+
+
+func _propagate_duplicate(item: TreeItem) -> void:
+	# Custom propagation to fix unwanted indeterminated state when not all cell
+	# modes are "checkbox"
+	item.propagate_check(_COL_DUPLICATE, true)
+	
+	var parent: TreeItem = item.get_parent()
+	var fixed_parent_state: State = _get_col_state(item, _COL_DUPLICATE)
+	
+	if fixed_parent_state != State.INTERMEDIATE:
+		for sibling in parent.get_children():
+			if sibling.get_cell_mode(_COL_DUPLICATE) == TreeItem.CELL_MODE_CHECK:
+				var sibling_state: State = _get_col_state(sibling, _COL_DUPLICATE)
+				if sibling_state != fixed_parent_state:
+					fixed_parent_state = State.INTERMEDIATE
+					break
+	
+	if _get_col_state(parent, _COL_DUPLICATE) != fixed_parent_state:
+		print(fixed_parent_state)
+		_apply_state_to(parent, _COL_DUPLICATE, fixed_parent_state)
+		parent.propagate_check(_COL_DUPLICATE, true)
+
+
+func _get_col_state(item: TreeItem, column: int) -> State:
+	if item.is_indeterminate(column):
+		return State.INTERMEDIATE
+	
+	if item.is_checked(column):
+		return State.CHECKED
+	
+	return State.UNCHECKED
 
 
 func _on_item_edited() -> void:
 	if get_edited() != get_root():
 		_on_column_edited(get_edited(), get_edited_column())
-	get_edited().propagate_check(get_edited_column(), true)
+	
+	if get_edited_column() == _COL_DUPLICATE:
+		_propagate_duplicate(get_edited())
+	else:
+		get_edited().propagate_check(get_edited_column(), true)
+	
 
 
 func _on_column_edited(item: TreeItem, column: int) -> void:
 	if item == null:
 		return
-	
-	if column == _COL_DUPLICATE:
-		var forced_duplicate_state: State = item.get_meta(_META_FORCED_DUPLICATE_STATE, -1)
-		
-		if forced_duplicate_state != -1:
-			apply_state_to(item, _COL_DUPLICATE, forced_duplicate_state)
-			return
 	
 	if not item.has_meta(_META_COPIED_PROPERTY):
 		return

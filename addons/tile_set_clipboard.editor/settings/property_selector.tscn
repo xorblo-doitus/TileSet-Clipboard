@@ -5,6 +5,6 @@
 [node name="CopiedPropertiesSelector" type="Tree"]
 offset_right = 16.0
 offset_bottom = 17.0
-columns = 5
+columns = 4
 script = ExtResource("1_5mcqa")
 ignored_properties = PackedStringArray("script")
