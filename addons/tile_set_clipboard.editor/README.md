@@ -35,7 +35,7 @@ Features a terrain replacer too:
 
 Example use case:
 
-![Pasting a terrain setup and changing the terrain](/addons/tile_set_clipboard.editor/.assets_for_readme/example_use.gif)
+![Pasting a terrain setup and changing the terrain](/addons/tile_set_clipboard.editor/.assets_for_readme/example_use_v2.gif)
 
 
 
@@ -43,7 +43,7 @@ Example use case:
 
 Property filters and quick settings:
 
-![Property filters and quick settings](/addons/tile_set_clipboard.editor/.assets_for_readme/property_filter.png)
+![Property filters and quick settings](/addons/tile_set_clipboard.editor/.assets_for_readme/property_filter_v2.png)
 
 
 Settings:
