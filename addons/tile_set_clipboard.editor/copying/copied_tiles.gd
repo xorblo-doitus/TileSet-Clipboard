@@ -36,12 +36,15 @@ func from_selection(selection: TileSelection, ) -> void:
 			copied_property.label = str(relative_pos)
 			copied_property.extended_label = "Atlas position: " + str(pos)
 		
-		for property_dict in copied_tile.get_property_list():
+		copies[relative_pos] = copy
+	
+	var i: int = 0
+	while i < __all_tiles_as_objects.size() and property_dicts.size() != property_names.size():
+		for property_dict in __all_tiles_as_objects[i].get_property_list():
 			var property_name: String = property_dict["name"]
 			if not property_name in property_dicts and property_name in property_names:
 				property_dicts[property_name] = property_dict
-		
-		copies[relative_pos] = copy
+		i += 1
 
 
 func paste(selection: TileSelection) -> void:

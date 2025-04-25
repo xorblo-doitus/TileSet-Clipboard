@@ -96,9 +96,10 @@ func build(
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		
 		_setup_main_cell(item)
-		item.set_icon(_COL_MAIN, AnyIcon.get_property_icon_from_dict(
-			_property_dicts[property_name]
-		))
+		if property_name in _property_dicts:
+			item.set_icon(_COL_MAIN, AnyIcon.get_property_icon_from_dict(
+				_property_dicts[property_name]
+			))
 		if property_name in _translations:
 			item.set_text(_COL_MAIN, _translations[property_name])
 		else:
