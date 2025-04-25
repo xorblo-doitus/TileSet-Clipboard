@@ -40,6 +40,7 @@ const _META_COPIED_PROPERTY = &"_tile_set_clipboard__copied_property"
 var _property_map: Dictionary[StringName, CopiedProperties]
 var _targets: Array[CopiedObject]
 var _translations: Dictionary[StringName, String]
+var _property_dicts: Dictionary[StringName, Dictionary]
 var _groups: Dictionary[StringName, TreeItem]
 
 
@@ -51,9 +52,14 @@ func _init() -> void:
 	reset()
 
 
-func build(new_targets: Array[CopiedObject], new_translations: Dictionary[StringName, String]) -> void:
+func build(
+	new_targets: Array[CopiedObject],
+	new_translations: Dictionary[StringName, String],
+	new_property_dicts: Dictionary[StringName, Dictionary],
+) -> void:
 	_targets = new_targets
 	_translations = new_translations
+	_property_dicts = new_property_dicts
 	reset()
 	
 	_property_map.clear()
@@ -90,6 +96,9 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		
 		_setup_main_cell(item)
+		item.set_icon(_COL_MAIN, AnyIcon.get_property_icon_from_dict(
+			_property_dicts[property_name]
+		))
 		if property_name in _translations:
 			item.set_text(_COL_MAIN, _translations[property_name])
 		else:

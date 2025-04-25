@@ -9,6 +9,7 @@ const Helper = preload("res://addons/tile_set_clipboard.editor/other/helper.gd")
 
 @export var size: Vector2i
 @export var copies: Dictionary[Vector2i, CopiedObject]
+@export var property_dicts: Dictionary[StringName, Dictionary] = {}
 
 
 
@@ -23,18 +24,24 @@ func from_selection(selection: TileSelection, ) -> void:
 	
 	for pos in selection.pos_to_tile:
 		var relative_pos: Vector2i = pos - selection.zone.position
-		
+		var copied_tile: TileData = selection.pos_to_tile[pos]
 		var copy: CopiedObject = CopiedObject.new()
+		
 		copy.from_object_and_properties(
-			selection.pos_to_tile[pos],
-			property_names
+			copied_tile,
+			property_names,
 		)
+		
 		for copied_property in copy.properties.values():
 			copied_property.label = str(relative_pos)
 			copied_property.extended_label = "Atlas position: " + str(pos)
 		
-		copies[relative_pos] = copy
+		for property_dict in copied_tile.get_property_list():
+			var property_name: String = property_dict["name"]
+			if not property_name in property_dicts and property_name in property_names:
+				property_dicts[property_name] = property_dict
 		
+		copies[relative_pos] = copy
 
 
 func paste(selection: TileSelection) -> void:

@@ -71,7 +71,9 @@ static func get_property_icon_from_dict(property_dict: Dictionary, fallback: Str
 	var type: Variant.Type = property_dict["type"]
 	
 	if type == TYPE_OBJECT:
-		return get_class_icon(property_dict["class_name"], fallback)
+		if property_dict["class_name"]:
+			return get_class_icon(property_dict["class_name"], fallback)
+		return get_icon(&"Object")
 	
 	return get_type_icon(type, fallback)
 

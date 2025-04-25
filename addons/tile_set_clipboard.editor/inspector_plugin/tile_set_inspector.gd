@@ -98,9 +98,13 @@ func open_settings() -> void:
 	var tree: CopiedPropertiesSelector = popup.get_node("%CopiedPropertiesSelector")
 	
 	if is_instance_valid(copied):
-		tree.build(copied.copies.values(), _get_property_translations())
+		tree.build(
+			copied.copies.values(),
+			_get_property_translations(),
+			copied.property_dicts,
+		)
 	else:
-		tree.build([], {})
+		tree.build([], {}, {})
 	
 	if (
 		settings.get_setting(Consts.SETTING_PREFIX + Consts.REMEMBER_WINDOW_SETTING)
