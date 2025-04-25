@@ -154,7 +154,7 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 	
 	base_item.collapsed = true
 	item.propagate_check(_COL_COPY, true)
-	item.propagate_check(_COL_DUPLICATE, true)
+	_propagate_duplicate(item)
 
 
 func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
@@ -300,15 +300,16 @@ func _propagate_duplicate(item: TreeItem) -> void:
 	item.propagate_check(_COL_DUPLICATE, true)
 	
 	var parent: TreeItem = item.get_parent()
-	var fixed_parent_state: State = _get_col_state(item, _COL_DUPLICATE)
+	var fixed_parent_state: State = State.NO_CHECK # Don't fetch the item state as it can be buggy
 	
-	if fixed_parent_state != State.INTERMEDIATE:
-		for sibling in parent.get_children():
-			if sibling.get_cell_mode(_COL_DUPLICATE) == TreeItem.CELL_MODE_CHECK:
-				var sibling_state: State = _get_col_state(sibling, _COL_DUPLICATE)
-				if sibling_state != fixed_parent_state:
-					fixed_parent_state = State.INTERMEDIATE
-					break
+	for sibling in parent.get_children():
+		if sibling.get_cell_mode(_COL_DUPLICATE) == TreeItem.CELL_MODE_CHECK:
+			var sibling_state: State = _get_col_state(sibling, _COL_DUPLICATE)
+			if fixed_parent_state == State.NO_CHECK:
+				fixed_parent_state = sibling_state
+			elif sibling_state != fixed_parent_state:
+				fixed_parent_state = State.INTERMEDIATE
+				break
 	
 	if _get_col_state(parent, _COL_DUPLICATE) != fixed_parent_state:
 		_apply_state_to(parent, _COL_DUPLICATE, fixed_parent_state)
