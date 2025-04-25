@@ -80,7 +80,7 @@ static func transfer_states(
 			continue
 		
 		var agregated_enabled: AgregatedState = agregate_enabled(from_properties)
-		var agregated_duplicate: AgregatedState = agregate_enabled(from_properties)
+		var agregated_duplicate: AgregatedState = agregate_duplicate(from_properties)
 		
 		save_agregation(enabled_cache, property_name, agregated_enabled)
 		save_agregation(duplicate_cache, property_name, agregated_duplicate)
