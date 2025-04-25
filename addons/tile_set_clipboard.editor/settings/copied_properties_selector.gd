@@ -15,11 +15,11 @@ const CopiedProperty = preload("res://addons/tile_set_clipboard.editor/copying/c
 const CopiedProperties = preload("res://addons/tile_set_clipboard.editor/copying/copied_properties.gd")
 
 
-const _COL_COPY: int = 0
-const _COL_DUPLICATE: int = _COL_COPY + 1
-const _COL_TEXT: int = _COL_DUPLICATE + 1
-const _COL_VALUE: int = _COL_TEXT + 1
-const _COL_COUNT: int = _COL_VALUE + 1
+## Main column with enable/disable checkbox, type icon and text
+const _COL_MAIN: int = 0
+const _COL_VALUE: int = _COL_MAIN + 1
+const _COL_DUPLICATE: int = _COL_VALUE + 1
+const _COL_COUNT: int = _COL_DUPLICATE + 1
 
 const _META_PROPERTY_PATH = &"_tile_set_clipboard__property_path"
 const _META_COPIED_PROPERTY = &"_tile_set_clipboard__copied_property"
@@ -72,10 +72,10 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 	
 	var root: TreeItem = create_item()
 	
-	_setup_copy_cell(root)
-	root.set_indeterminate(_COL_COPY, true)
+	_setup_main_cell(root)
+	root.set_indeterminate(_COL_MAIN, true)
 	
-	_set_text_cell(root, "TileData")
+	root.set_text(_COL_MAIN, "TileData")
 	
 	var item: TreeItem
 	var all_cant_duplicate: bool = true
@@ -85,17 +85,17 @@ func build(new_targets: Array[CopiedObject], new_translations: Dictionary[String
 			continue
 		
 		var properties: Array[CopiedProperty] = _property_map[property_name].properties
+		
 		item = create_item(_get_tree_parent(root, property_name))
-		
-		item.set_tooltip_text(_COL_TEXT, property_name)
-		if property_name in _translations:
-			_set_text_cell(item, _translations[property_name])
-		else:
-			_set_text_cell(item, property_name.get_file().capitalize())
-		
 		item.set_meta(_META_PROPERTY_PATH, property_name)
 		
-		_setup_copy_cell(item)
+		_setup_main_cell(item)
+		if property_name in _translations:
+			item.set_text(_COL_MAIN, _translations[property_name])
+		else:
+			item.set_text(_COL_MAIN, property_name.get_file().capitalize())
+		
+		item.set_tooltip_text(_COL_MAIN, property_name)
 		
 		_add_per_instance_item(item, properties)
 		
@@ -119,12 +119,12 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		item = create_item(base_item)
 		item.set_meta(_META_COPIED_PROPERTY, copied_property)
 		
-		item.set_icon(_COL_TEXT, AnyIcon.get_variant_icon(copied_property.base_value))
+		_setup_main_cell(item)
+		item.set_checked(_COL_MAIN, copied_property.enabled)
+		item.set_icon(_COL_MAIN, AnyIcon.get_variant_icon(copied_property.base_value))
+		item.set_text(_COL_MAIN, copied_property.label + ": " + str(copied_property.duplicated_value))
+		item.set_tooltip_text(_COL_MAIN, copied_property.extended_label + "\nProperty value: " + str(copied_property.duplicated_value))
 		
-		_set_text_cell(item, copied_property.label)
-		item.set_tooltip_text(_COL_TEXT, copied_property.extended_label)
-		
-		item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
 		if copied_property.base_value is Color:
 			item.set_custom_bg_color(_COL_VALUE, copied_property.base_value)
 			item.set_custom_color(
@@ -133,11 +133,6 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 				if copied_property.base_value.srgb_to_linear().get_luminance() > 0.5
 				else Color.WHITE
 			)
-		else:
-			item.set_text(_COL_VALUE, str(copied_property.duplicated_value))
-		
-		_setup_copy_cell(item)
-		item.set_checked(_COL_COPY, copied_property.enabled)
 		
 		_setup_duplicate_cell(item)
 		var duplicate_state: State = State.NO_CHECK
@@ -153,7 +148,7 @@ func _add_per_instance_item(base_item: TreeItem, properties: Array[CopiedPropert
 		_setup_duplicate_cell(base_item)
 	
 	base_item.collapsed = true
-	item.propagate_check(_COL_COPY, true)
+	item.propagate_check(_COL_MAIN, true)
 	_propagate_duplicate(item)
 
 
@@ -175,15 +170,13 @@ func _get_tree_parent(root: TreeItem, path: StringName) -> TreeItem:
 		if not current_path in _groups:
 			parent = create_item(parent)
 			
-			parent.set_tooltip_text(_COL_TEXT, current_path)
-			if split in _translations:
-				parent.set_text(_COL_TEXT, _translations[split])
-			else:
-				parent.set_text(_COL_TEXT, split.capitalize())
-			parent.set_expand_right(_COL_TEXT, true)
+			_setup_main_cell(parent)
 			
-			parent.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
-			parent.set_editable(_COL_COPY, true)
+			parent.set_tooltip_text(_COL_MAIN, current_path)
+			if split in _translations:
+				parent.set_text(_COL_MAIN, _translations[split])
+			else:
+				parent.set_text(_COL_MAIN, split.capitalize())
 			
 			parent.collapsed = true
 			
@@ -268,30 +261,24 @@ func _apply_state_to(item: TreeItem, column: int, state: State) -> void:
 func reset() -> void:
 	columns = _COL_COUNT
 	
-	set_column_expand(_COL_COPY, false)
+	set_column_expand(_COL_MAIN, true)
+	set_column_expand(_COL_VALUE, false)
 	set_column_expand(_COL_DUPLICATE, false)
-	set_column_expand(_COL_TEXT, false)
 	
 	column_titles_visible = false
 	
 	clear()
 
 
-func _setup_copy_cell(item: TreeItem) -> void:
-	item.set_cell_mode(_COL_COPY, TreeItem.CELL_MODE_CHECK)
-	item.set_tooltip_text(_COL_COPY, "Copy")
-	item.set_editable(_COL_COPY, true)
+func _setup_main_cell(item: TreeItem) -> void:
+	item.set_cell_mode(_COL_MAIN, TreeItem.CELL_MODE_CHECK)
+	item.set_editable(_COL_MAIN, true)
 
 
 func _setup_duplicate_cell(item: TreeItem) -> void:
 	item.set_cell_mode(_COL_DUPLICATE, TreeItem.CELL_MODE_CHECK)
 	item.set_tooltip_text(_COL_DUPLICATE, "Duplicate")
 	item.set_editable(_COL_DUPLICATE, true)
-
-
-func _set_text_cell(item: TreeItem, text: String) -> void:
-	item.set_text(_COL_TEXT, text)
-	item.set_expand_right(_COL_TEXT, true)
 
 
 func _propagate_duplicate(item: TreeItem) -> void:
@@ -348,7 +335,7 @@ func _on_column_edited(item: TreeItem, column: int) -> void:
 	var new_checked: bool = item.is_checked(column)
 	
 	match column:
-		_COL_COPY:
+		_COL_MAIN:
 			copied_property.enabled = new_checked
 		_COL_DUPLICATE:
 			copied_property.duplicate = new_checked
