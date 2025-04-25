@@ -13,14 +13,14 @@ You can **copy** and **paste** multiple tiles:
 ![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste_v2.gif)
 
 
-You can **filter** which **properties** are pasted:
+You can **filter** which **properties** are pasted and optionaly **duplicate** when pasting (for instance when pasting resources):
 
-![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/filter_properties_v2.gif)
+![Choosing properties to paste](/addons/tile_set_clipboard.editor/.assets_for_readme/filter_properties_v3.gif)
 
 
 You can **undo** and **redo** pasting:
 
-![Choosing to paste only modulate, then only probability](/addons/tile_set_clipboard.editor/.assets_for_readme/undo_redo.gif)
+![Undoing and redoing](/addons/tile_set_clipboard.editor/.assets_for_readme/undo_redo.gif)
 
 
 Controls are intuitive; they work mostly like in a **spreadsheet**:
@@ -30,7 +30,7 @@ Controls are intuitive; they work mostly like in a **spreadsheet**:
 
 Features a terrain replacer too:
 
-![Pasting multiple tiles into one tile, pasting patterns](/addons/tile_set_clipboard.editor/.assets_for_readme/terrain_swapper.gif)
+![Replacing a terrain by another in the selection](/addons/tile_set_clipboard.editor/.assets_for_readme/terrain_swapper.gif)
 
 
 Example use case:
@@ -62,8 +62,8 @@ I leave the "maybe" stuff for now. If you are interested by their implementation
 - [x] Add a way to filter which properties are pasted.
   - [x] Display custom data name instead of "custom_data_0", "custom_data_1", "custom_data_2"...
   - [ ] (Maybe) Add a way to filter property components (such as x and y for Vector2 properties)
-  - [ ] (Maybe) Display value type
-  - [ ] (Maybe) Fold peering bits into one property
+  - [x] (Maybe) Display value type
+  - [x] (Maybe) Fold peering bits into one property
 - [x] Paste from upper left corner. (Similar to LO Calc when pasting multiple cells in one cell). Unknown feasibility.
 - [x] Add wrapping pasting. (Similar to LO Calc when pasting in more cells than there are selected) .
 - [ ] (Maybe) Cross instance copy paste (though serialization in the OS paste bin). Unknown feasibility.
