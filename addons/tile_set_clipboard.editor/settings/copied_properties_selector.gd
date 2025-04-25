@@ -311,7 +311,6 @@ func _propagate_duplicate(item: TreeItem) -> void:
 					break
 	
 	if _get_col_state(parent, _COL_DUPLICATE) != fixed_parent_state:
-		print(fixed_parent_state)
 		_apply_state_to(parent, _COL_DUPLICATE, fixed_parent_state)
 		parent.propagate_check(_COL_DUPLICATE, true)
 
