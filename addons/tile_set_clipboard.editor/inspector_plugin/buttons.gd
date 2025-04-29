@@ -15,8 +15,9 @@ func _ready() -> void:
 	
 	load_theme()
 
-	focus_mode = Control.FOCUS_ALL
-	grab_focus.call_deferred()
+	if not EditorInterface.get_inspector().is_ancestor_of(get_viewport().gui_get_focus_owner()):
+		focus_mode = Control.FOCUS_ALL
+		grab_focus.call_deferred()
 	
 	if EditorInterface.get_editor_settings().has_setting("addons/tile_set_clipboard/shortcuts/copy"):
 		copy_button.shortcut = EditorInterface.get_editor_settings().get_setting("addons/tile_set_clipboard/shortcuts/copy")
