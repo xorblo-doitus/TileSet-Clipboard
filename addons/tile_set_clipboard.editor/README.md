@@ -10,32 +10,32 @@ A Godot addon that adds advanced copying-and-pasting to the tile set editor.
 
 You can **copy** and **paste** multiple tiles:
 
-![Copying and pasting 4 tiles in a TileSet](/addons/tile_set_clipboard.editor/.assets_for_readme/copy_paste_v2.gif)
+![Copying and pasting 4 tiles in a TileSet](/.assets_for_readme/copy_paste_v2.gif)
 
 
 You can **filter** which **properties** are pasted and optionaly **duplicate** when pasting (for instance when pasting resources):
 
-![Choosing properties to paste](/addons/tile_set_clipboard.editor/.assets_for_readme/filter_properties_v3.gif)
+![Choosing properties to paste](/.assets_for_readme/filter_properties_v3.gif)
 
 
 You can **undo** and **redo** pasting:
 
-![Undoing and redoing](/addons/tile_set_clipboard.editor/.assets_for_readme/undo_redo.gif)
+![Undoing and redoing](/.assets_for_readme/undo_redo.gif)
 
 
 Controls are intuitive; they work mostly like in a **spreadsheet**:
 
-![Pasting multiple tiles into one tile, pasting patterns](/addons/tile_set_clipboard.editor/.assets_for_readme/spreadsheet_like.gif)
+![Pasting multiple tiles into one tile, pasting patterns](/.assets_for_readme/spreadsheet_like.gif)
 
 
 Features a terrain replacer too:
 
-![Replacing a terrain by another in the selection](/addons/tile_set_clipboard.editor/.assets_for_readme/terrain_swapper.gif)
+![Replacing a terrain by another in the selection](/.assets_for_readme/terrain_swapper.gif)
 
 
 Example use case:
 
-![Pasting a terrain setup and changing the terrain](/addons/tile_set_clipboard.editor/.assets_for_readme/example_use_v2.gif)
+![Pasting a terrain setup and changing the terrain](/.assets_for_readme/example_use_v2.gif)
 
 
 
@@ -43,12 +43,12 @@ Example use case:
 
 Property filters and quick settings:
 
-![Property filters and quick settings](/addons/tile_set_clipboard.editor/.assets_for_readme/property_filter_v2.png)
+![Property filters and quick settings](/.assets_for_readme/property_filter_v2.png)
 
 
 Settings:
 
-![Settings](/addons/tile_set_clipboard.editor/.assets_for_readme/settings.png)
+![Settings](/.assets_for_readme/settings.png)
 
 
 
@@ -78,7 +78,7 @@ You can download the addon:
 - Through the editor: `AssetLib` → Search for "TileSet Clipboard"
 
 *By default, this readme is included, along with it's illustrations. If you don't want them,
-do not download `addons/tile_set_clipboard.editor/README.md` nor `addons/tile_set_clipboard.editor/.assets_for_readme/*`*
+do not download `addons/tile_set_clipboard.editor/README.md` nor `.assets_for_readme/*`*
 
 You can also exclude `*.editor/*` or `tile_set_clipboard.editor/` from your export presets,
 because this addon is editor-only.
