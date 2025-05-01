@@ -1,7 +1,7 @@
-[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://tjaksmo0s5yw"]
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://du345tavvnuq8"]
 
-[ext_resource type="Texture2D" uid="uid://bubkbee162gji" path="res://test_resource.tres" id="1_kq1pc"]
-[ext_resource type="Texture2D" uid="uid://dmn3e536ro8k0" path="res://godot_icon.svg" id="2_u80ep"]
+[ext_resource type="Texture2D" uid="uid://bubkbee162gji" path="res://test_resource.tres" id="1_qv87r"]
+[ext_resource type="Texture2D" uid="uid://dmn3e536ro8k0" path="res://godot_icon.svg" id="2_r755y"]
 
 [sub_resource type="Gradient" id="Gradient_nq4aq"]
 colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
@@ -10,7 +10,7 @@ colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
 gradient = SubResource("Gradient_nq4aq")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nq4aq"]
-texture = ExtResource("2_u80ep")
+texture = ExtResource("2_r755y")
 0:0/0 = 0
 0:0/0/terrain_set = 0
 0:0/0/terrain = 0
@@ -110,7 +110,7 @@ texture = ExtResource("2_u80ep")
 3:5/0 = 0
 3:5/0/custom_data_2 = SubResource("GradientTexture1D_nq4aq")
 4:5/0 = 0
-4:5/0/custom_data_2 = ExtResource("1_kq1pc")
+4:5/0/custom_data_2 = ExtResource("1_qv87r")
 5:5/0 = 0
 6:5/0 = 0
 7:5/0 = 0
@@ -147,7 +147,7 @@ texture = ExtResource("2_u80ep")
 7:7/0/terrains_peering_bit/top_side = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1vrtm"]
-texture = ExtResource("2_u80ep")
+texture = ExtResource("2_r755y")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
@@ -218,6 +218,8 @@ physics_layer_0/collision_layer = 1
 terrain_set_0/mode = 2
 terrain_set_0/terrain_0/name = "Sides 9-patch"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+terrain_set_0/terrain_1/name = "Other terrain"
+terrain_set_0/terrain_1/color = Color(0, 0.515912, 0.440954, 1)
 custom_data_layer_0/name = "test"
 custom_data_layer_0/type = 4
 custom_data_layer_1/name = "c"
